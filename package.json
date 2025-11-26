@@ -2,8 +2,12 @@
   "name": "high-coherence",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "build": "nuxt build",
+    "start": "HOST=0.0.0.0 node .output/server/index.mjs",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",

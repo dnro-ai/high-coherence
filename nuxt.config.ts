@@ -11,5 +11,17 @@ export default defineNuxtConfig({
         { name: 'description', content: 'HEXACO-based personality assessments and 360 reviews for employee development' }
       ]
     }
+  },
+  nitro: {
+    preset: 'node-server'
+  },
+  devServer: {
+    port: parseInt(process.env.PORT || '3000')
+  },
+  runtimeConfig: {
+    resendApiKey: process.env.RESEND_API_KEY,
+    public: {
+      appUrl: process.env.NUXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    }
   }
 })

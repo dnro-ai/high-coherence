@@ -1,14 +1,14 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function sendReviewInvite(
   toEmail: string,
-  revieweeNane: string,
+  revieweeName: string,
   reviewToken: string,
   reviewType: 'peer' | 'manager' | 'direct-report'
 ) {
-  const baseUrl = process.env.NUXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  const config = useRuntimeConfig()
+  const resend = new Resend(config.resendApiKey)
+  const baseUrl = config.public.appUrl
   const reviewUrl = `${baseUrl}/review/${reviewToken}`
 
   const typeLabels = {
@@ -21,7 +21,7 @@ export async function sendReviewInvite(
     const { data, error } = await resend.emails.send({
       from: 'High Coherence <reviews@highcoherence.com>',
       to: toEmail,
-      subject: `360 Review Request: ${typeLabels[reviewType]} for ${revieweeNane}`,
+      subject: `360 Review Request: ${typeLabels[reviewType]} for ${revieweeName}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -49,7 +49,7 @@ export async function sendReviewInvite(
 
             <p>Hello,</p>
 
-            <p>You've been invited to provide a <strong>${typeLabels[reviewType]}</strong> for <strong>${revieweeNane}</strong> as part of our 360-degree feedback process.</p>
+            <p>You've been invited to provide a <strong>${typeLabels[reviewType]}</strong> for <strong>${revieweeName}</strong> as part of our 360-degree feedback process.</p>
 
             <div class="note">
               <strong>🔒 Your feedback is completely anonymous.</strong><br>
