@@ -1,76 +1,51 @@
-# Nuxt Minimal Starter
+# High Coherence
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Employee development platform featuring HEXACO-based personality assessments and 360 reviews.
+
+## Features
+
+- **Dashboard** - Personal development overview with HEXACO profile scores and progress tracking
+- **Assessments** - HEXACO personality assessments for employees
+- **360 Reviews** - Comprehensive feedback collection from peers, managers, and direct reports
+- **Reports** - Company-wide analytics and department performance insights
+- **AI Coach** - Personalized coaching recommendations based on assessment results
+
+## Tech Stack
+
+- **Framework**: Nuxt 4
+- **UI**: Nuxt UI 4
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide
+- **Email**: Resend
 
 ## Setup
 
-Make sure to install dependencies:
-
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+## Environment Variables
 
-Start the development server on `http://localhost:3000`:
+Create a `.env` file:
+
+```
+RESEND_API_KEY=your_resend_api_key
+NUXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+## Development
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
 ## Production
 
-Build the application for production:
-
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+npm run start
 ```
 
-Locally preview production build:
+## License
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
-# high-coherence
+MIT
