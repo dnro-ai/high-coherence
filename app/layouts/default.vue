@@ -68,9 +68,11 @@ const userMenu = [[
         </UDashboardNavbar>
       </template>
 
-      <div class="p-6 bg-gray-50 min-h-full">
-        <slot />
-      </div>
+      <template #body>
+        <div class="bg-gray-50">
+          <slot />
+        </div>
+      </template>
     </UDashboardPanel>
   </UDashboardGroup>
 </template>
