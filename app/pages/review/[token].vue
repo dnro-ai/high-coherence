@@ -196,7 +196,9 @@ const typeLabels: Record<string, string> = {
           <span class="text-sm font-medium text-gray-700">{{ currentCategory.name }}</span>
           <span class="text-sm text-gray-500">Step {{ currentStep + 1 }} of {{ categories.length }}</span>
         </div>
-        <UProgress :value="progress" color="primary" size="sm" />
+        <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div class="h-full rounded-full bg-primary-500 transition-all duration-300" :style="{ width: `${progress}%` }" />
+        </div>
       </div>
 
       <!-- Question Card -->

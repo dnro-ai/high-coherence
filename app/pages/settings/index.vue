@@ -31,11 +31,56 @@ const privacy = ref({
   allowAIAnalysis: true
 })
 
-const integrations = [
-  { name: 'Slack', icon: 'i-simple-icons-slack', color: '#4A154B', connected: false },
-  { name: 'Google Calendar', icon: 'i-simple-icons-googlecalendar', color: '#4285F4', connected: true },
-  { name: 'Microsoft Teams', icon: 'i-simple-icons-microsoftteams', color: '#6264A7', connected: false }
-]
+const integrations = ref([
+  { name: 'Slack', icon: 'i-lucide-message-square', color: '#4A154B', connected: false },
+  { name: 'Google Calendar', icon: 'i-lucide-calendar', color: '#4285F4', connected: true },
+  { name: 'Microsoft Teams', icon: 'i-lucide-users', color: '#6264A7', connected: false }
+])
+
+const toast = useToast()
+const saving = ref(false)
+
+const saveProfile = async () => {
+  saving.value = true
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  saving.value = false
+  toast.add({
+    title: 'Profile Updated',
+    description: 'Your profile changes have been saved.',
+    color: 'success',
+    icon: 'i-lucide-check-circle'
+  })
+}
+
+const toggleIntegration = async (integration: typeof integrations.value[0]) => {
+  if (integration.connected) {
+    integration.connected = false
+    toast.add({
+      title: 'Disconnected',
+      description: `${integration.name} has been disconnected.`,
+      color: 'neutral',
+      icon: 'i-lucide-unlink'
+    })
+  } else {
+    // Simulate OAuth flow
+    integration.connected = true
+    toast.add({
+      title: 'Connected',
+      description: `${integration.name} has been connected successfully.`,
+      color: 'success',
+      icon: 'i-lucide-link'
+    })
+  }
+}
+
+const deleteAccount = () => {
+  toast.add({
+    title: 'Action Required',
+    description: 'Please contact support to delete your account.',
+    color: 'warning',
+    icon: 'i-lucide-alert-triangle'
+  })
+}
 </script>
 
 <template>
@@ -108,7 +153,7 @@ const integrations = [
 
           <div class="flex items-center justify-end gap-3">
             <UButton variant="ghost" color="neutral">Cancel</UButton>
-            <UButton class="bg-gradient-to-r from-violet-500 to-purple-600">Save Changes</UButton>
+            <UButton class="bg-gradient-to-r from-violet-500 to-purple-600" :loading="saving" @click="saveProfile">Save Changes</UButton>
           </div>
         </div>
 
@@ -208,7 +253,7 @@ const integrations = [
               class="mt-8"
             >
               <template #actions>
-                <UButton color="error" variant="outline" size="sm">Delete Account</UButton>
+                <UButton color="error" variant="outline" size="sm" @click="deleteAccount">Delete Account</UButton>
               </template>
             </UAlert>
           </div>
@@ -237,8 +282,8 @@ const integrations = [
                     </p>
                   </div>
                 </div>
-                <UBadge v-if="integration.connected" color="success" variant="subtle">Connected</UBadge>
-                <UButton v-else variant="outline" size="sm">Connect</UButton>
+                <UButton v-if="integration.connected" color="error" variant="ghost" size="sm" @click="toggleIntegration(integration)">Disconnect</UButton>
+                <UButton v-else variant="outline" size="sm" @click="toggleIntegration(integration)">Connect</UButton>
               </div>
             </UCard>
           </div>

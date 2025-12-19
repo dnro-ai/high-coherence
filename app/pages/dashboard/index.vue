@@ -40,6 +40,25 @@ const getScoreColor = (score: number) => {
   if (score >= 40) return 'bg-amber-500'
   return 'bg-rose-500'
 }
+
+const toast = useToast()
+
+const refreshRecommendations = () => {
+  toast.add({
+    title: 'Refreshing...',
+    description: 'Analyzing your profile for new recommendations.',
+    color: 'info',
+    icon: 'i-lucide-refresh-cw'
+  })
+}
+
+const showTraitDetails = ref(false)
+const selectedTrait = ref<typeof hexacoScores[0] | null>(null)
+
+const viewTraitDetails = (trait: typeof hexacoScores[0]) => {
+  selectedTrait.value = trait
+  showTraitDetails.value = true
+}
 </script>
 
 <template>
@@ -101,7 +120,7 @@ const getScoreColor = (score: number) => {
         <template #header>
           <div class="flex items-center justify-between">
             <h2 class="text-lg font-semibold text-gray-900">Your HEXACO Profile</h2>
-            <UButton variant="ghost" size="sm" color="neutral">View Details</UButton>
+            <UButton variant="ghost" size="sm" color="neutral" to="/assessment">View Details</UButton>
           </div>
         </template>
 
@@ -109,7 +128,8 @@ const getScoreColor = (score: number) => {
           <div
             v-for="trait in hexacoScores"
             :key="trait.trait"
-            class="group"
+            class="group cursor-pointer"
+            @click="viewTraitDetails(trait)"
           >
             <div class="flex items-center justify-between mb-2">
               <span class="text-sm font-medium text-gray-700">{{ trait.trait }}</span>
@@ -169,7 +189,7 @@ const getScoreColor = (score: number) => {
             <h2 class="text-lg font-semibold text-gray-900">Personalized Recommendations</h2>
             <p class="text-sm text-gray-500 mt-1">Based on your HEXACO profile and 360 feedback</p>
           </div>
-          <UButton variant="soft" size="sm" icon="i-lucide-refresh-cw">Refresh</UButton>
+          <UButton variant="soft" size="sm" icon="i-lucide-refresh-cw" @click="refreshRecommendations">Refresh</UButton>
         </div>
       </template>
 
@@ -188,9 +208,50 @@ const getScoreColor = (score: number) => {
           </div>
           <h3 class="font-semibold text-gray-900 mb-2">{{ rec.title }}</h3>
           <p class="text-sm text-gray-600 mb-4">{{ rec.description }}</p>
-          <UButton variant="outline" size="sm" block>Learn More</UButton>
+          <UButton variant="outline" size="sm" block to="/coach">Learn More</UButton>
         </UCard>
       </div>
     </UCard>
+
+    <!-- Trait Details Modal -->
+    <UModal v-model:open="showTraitDetails">
+      <template #content>
+        <div class="p-6 max-h-[85vh] overflow-y-auto">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">{{ selectedTrait?.trait }}</h2>
+            <UButton variant="ghost" icon="i-lucide-x" @click="showTraitDetails = false" />
+          </div>
+
+          <div v-if="selectedTrait" class="space-y-6">
+            <!-- Score Display -->
+            <div class="text-center p-6 bg-gray-50 rounded-xl">
+              <p class="text-5xl font-bold text-gray-900 mb-2">{{ selectedTrait.score }}%</p>
+              <UBadge :color="selectedTrait.score >= 80 ? 'success' : selectedTrait.score >= 60 ? 'primary' : 'warning'" size="lg">
+                {{ selectedTrait.score >= 80 ? 'High' : selectedTrait.score >= 60 ? 'Moderate' : 'Developing' }}
+              </UBadge>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <h3 class="font-medium text-gray-900 mb-2">What This Means</h3>
+              <p class="text-gray-600">{{ selectedTrait.description }}</p>
+            </div>
+
+            <!-- Implications -->
+            <UAlert color="info" variant="subtle" icon="i-lucide-lightbulb">
+              <template #title>Workplace Implications</template>
+              <template #description>
+                This trait influences how you collaborate with others, handle stress, and approach challenges. Consider discussing this with your AI Coach for personalized strategies.
+              </template>
+            </UAlert>
+
+            <div class="flex justify-end gap-3">
+              <UButton variant="ghost" color="neutral" @click="showTraitDetails = false">Close</UButton>
+              <UButton class="bg-gradient-to-r from-violet-500 to-purple-600" to="/coach">Discuss with AI Coach</UButton>
+            </div>
+          </div>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>

@@ -35,6 +35,44 @@ const insights = [
   { title: 'Emotionality Variance', description: 'There is significant variance in Emotionality scores across departments. Consider team-building activities to improve emotional support.', type: 'warning', icon: 'i-lucide-alert-triangle' },
   { title: 'Sales Team Engagement', description: 'Sales team shows lower engagement scores. Review workload distribution and recognition programs.', type: 'info', icon: 'i-lucide-lightbulb' }
 ]
+
+const toast = useToast()
+
+const exportReport = () => {
+  toast.add({
+    title: 'Exporting Report',
+    description: 'Your report is being generated and will download shortly.',
+    color: 'info',
+    icon: 'i-lucide-download'
+  })
+}
+
+const generateReport = () => {
+  toast.add({
+    title: 'Generating Report',
+    description: 'A new report is being generated with the latest data.',
+    color: 'success',
+    icon: 'i-lucide-file-plus'
+  })
+}
+
+const refreshInsights = () => {
+  toast.add({
+    title: 'Refreshing Insights',
+    description: 'AI is analyzing the latest data for new insights.',
+    color: 'info',
+    icon: 'i-lucide-refresh-cw'
+  })
+}
+
+const downloadReport = (report: typeof recentReports[0]) => {
+  toast.add({
+    title: 'Downloading',
+    description: `${report.title} is being downloaded.`,
+    color: 'success',
+    icon: 'i-lucide-download'
+  })
+}
 </script>
 
 <template>
@@ -46,10 +84,10 @@ const insights = [
         <p class="text-white/70 mt-1">Company-wide performance insights and summaries</p>
       </div>
       <div class="flex items-center gap-3">
-        <UButton variant="outline" icon="i-lucide-download" class="bg-white/70 backdrop-blur-xl border-white/30">
+        <UButton variant="outline" icon="i-lucide-download" class="bg-white/70 backdrop-blur-xl border-white/30" @click="exportReport">
           Export Report
         </UButton>
-        <UButton icon="i-lucide-plus" class="bg-gradient-to-r from-violet-500 to-purple-600">
+        <UButton icon="i-lucide-plus" class="bg-gradient-to-r from-violet-500 to-purple-600" @click="generateReport">
           Generate Report
         </UButton>
       </div>
@@ -157,7 +195,7 @@ const insights = [
         <template #header>
           <div class="flex items-center justify-between">
             <h2 class="text-lg font-semibold text-gray-900">AI-Generated Insights</h2>
-            <UButton variant="ghost" size="sm" icon="i-lucide-refresh-cw">Refresh</UButton>
+            <UButton variant="ghost" size="sm" icon="i-lucide-refresh-cw" @click="refreshInsights">Refresh</UButton>
           </div>
         </template>
 
@@ -198,7 +236,7 @@ const insights = [
                 <p class="text-sm text-gray-500">{{ report.date }}</p>
               </div>
             </div>
-            <UButton variant="ghost" icon="i-lucide-download" size="sm" />
+            <UButton variant="ghost" icon="i-lucide-download" size="sm" @click="downloadReport(report)" />
           </div>
         </div>
 

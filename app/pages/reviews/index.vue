@@ -68,17 +68,23 @@ const openInviteModal = (employee: typeof employees.value[0]) => {
   showInviteModal.value = true
 }
 
+const toast = useToast()
+
 const sendInvites = async () => {
   if (!selectedEmployee.value || !inviteForm.value.emails) return
 
   sendingInvites.value = true
-  const emails = inviteForm.value.emails.split(',').map(e => e.trim())
+  const emails = inviteForm.value.emails.split(',').map(e => e.trim()).filter(e => e)
 
   // Simulate sending - in production this would call the API
   await new Promise(resolve => setTimeout(resolve, 1500))
 
-  // Show success toast
-  alert(`Review invites sent to ${emails.length} recipients for ${selectedEmployee.value.name}`)
+  toast.add({
+    title: 'Invites Sent',
+    description: `Review invites sent to ${emails.length} recipient${emails.length > 1 ? 's' : ''} for ${selectedEmployee.value.name}`,
+    color: 'success',
+    icon: 'i-lucide-check-circle'
+  })
 
   sendingInvites.value = false
   showInviteModal.value = false
@@ -274,7 +280,7 @@ const stats = [
     <!-- Send Invite Modal -->
     <UModal v-model:open="showInviteModal">
       <template #content>
-        <div class="p-6">
+        <div class="p-6 max-h-[85vh] overflow-y-auto">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl font-semibold text-gray-900">Send Review Invites</h2>
             <UButton variant="ghost" icon="i-lucide-x" @click="showInviteModal = false" />
@@ -335,7 +341,7 @@ const stats = [
     <!-- Detailed Results Modal -->
     <UModal v-model:open="showResultsModal" :ui="{ width: 'max-w-3xl' }">
       <template #content>
-        <div class="p-6">
+        <div class="p-6 max-h-[85vh] overflow-y-auto">
           <div class="flex items-center justify-between mb-6">
             <div>
               <h2 class="text-xl font-semibold text-gray-900">Review Results</h2>
@@ -350,17 +356,23 @@ const stats = [
               <UCard variant="subtle" :ui="{ body: 'p-4 text-center' }">
                 <p class="text-3xl font-bold text-gray-900">{{ mockDetailedResults.performance.avg }}</p>
                 <p class="text-sm text-gray-500">Performance</p>
-                <UProgress :value="mockDetailedResults.performance.avg * 20" color="primary" size="xs" class="mt-2" />
+                <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden mt-2">
+                  <div class="h-full rounded-full bg-primary-500" :style="{ width: `${mockDetailedResults.performance.avg * 20}%` }" />
+                </div>
               </UCard>
               <UCard variant="subtle" :ui="{ body: 'p-4 text-center' }">
                 <p class="text-3xl font-bold text-gray-900">{{ mockDetailedResults.collaboration.avg }}</p>
                 <p class="text-sm text-gray-500">Collaboration</p>
-                <UProgress :value="mockDetailedResults.collaboration.avg * 20" color="success" size="xs" class="mt-2" />
+                <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden mt-2">
+                  <div class="h-full rounded-full bg-emerald-500" :style="{ width: `${mockDetailedResults.collaboration.avg * 20}%` }" />
+                </div>
               </UCard>
               <UCard variant="subtle" :ui="{ body: 'p-4 text-center' }">
                 <p class="text-3xl font-bold text-gray-900">{{ mockDetailedResults.leadership.avg }}</p>
                 <p class="text-sm text-gray-500">Leadership</p>
-                <UProgress :value="mockDetailedResults.leadership.avg * 20" color="warning" size="xs" class="mt-2" />
+                <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden mt-2">
+                  <div class="h-full rounded-full bg-amber-500" :style="{ width: `${mockDetailedResults.leadership.avg * 20}%` }" />
+                </div>
               </UCard>
             </div>
 

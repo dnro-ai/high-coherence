@@ -93,6 +93,54 @@ const selectAnswer = (value: number) => {
 const getCurrentAnswer = computed(() => {
   return answers.value[currentTrait.value]?.[currentQuestionIndex.value]
 })
+
+// Self Assessment
+const selfAssessmentStarted = ref(false)
+const selfAssessmentCompleted = ref(false)
+const selfAssessmentStep = ref(0)
+
+const selfAssessmentQuestions = [
+  { id: 'accomplishments', question: 'What were your key accomplishments this quarter?', type: 'textarea' },
+  { id: 'challenges', question: 'What challenges did you face and how did you overcome them?', type: 'textarea' },
+  { id: 'skills', question: 'What new skills have you developed?', type: 'textarea' },
+  { id: 'goals', question: 'What are your goals for the next quarter?', type: 'textarea' },
+  { id: 'support', question: 'What support do you need from your manager or team?', type: 'textarea' },
+  { id: 'rating', question: 'How would you rate your overall performance this quarter?', type: 'rating' }
+]
+
+const selfAssessmentAnswers = ref<Record<string, string | number>>({})
+
+const submitSelfAssessment = () => {
+  if (selfAssessmentStep.value < selfAssessmentQuestions.length - 1) {
+    selfAssessmentStep.value++
+  } else {
+    selfAssessmentCompleted.value = true
+  }
+}
+
+// Company Assessment
+const companyAssessmentStarted = ref(false)
+const companyAssessmentCompleted = ref(false)
+const companyAssessmentStep = ref(0)
+
+const companyAssessmentQuestions = [
+  { id: 'culture', question: 'How would you describe the company culture?', type: 'rating', label: 'Very Negative to Very Positive' },
+  { id: 'values', question: 'How well does the company live up to its stated values?', type: 'rating', label: 'Not at All to Completely' },
+  { id: 'communication', question: 'How effective is communication from leadership?', type: 'rating', label: 'Very Ineffective to Very Effective' },
+  { id: 'growth', question: 'Do you feel there are opportunities for growth and development?', type: 'rating', label: 'Strongly Disagree to Strongly Agree' },
+  { id: 'recommend', question: 'Would you recommend this company as a great place to work?', type: 'rating', label: 'Definitely Not to Definitely Yes' },
+  { id: 'feedback', question: 'What suggestions do you have to improve the work environment?', type: 'textarea' }
+]
+
+const companyAssessmentAnswers = ref<Record<string, string | number>>({})
+
+const submitCompanyAssessment = () => {
+  if (companyAssessmentStep.value < companyAssessmentQuestions.length - 1) {
+    companyAssessmentStep.value++
+  } else {
+    companyAssessmentCompleted.value = true
+  }
+}
 </script>
 
 <template>
@@ -150,7 +198,9 @@ const getCurrentAnswer = computed(() => {
             <span class="text-sm font-medium text-gray-700">Progress</span>
             <span class="text-sm text-gray-500">{{ progress }}%</span>
           </div>
-          <UProgress :value="progress" color="primary" size="sm" />
+          <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-primary-500 transition-all duration-300" :style="{ width: `${progress}%` }" />
+          </div>
         </div>
 
         <!-- Current Trait Badge -->
@@ -218,7 +268,8 @@ const getCurrentAnswer = computed(() => {
 
     <!-- Self Assessment -->
     <UCard v-else-if="activeTab === 'self'" class="bg-white/80 backdrop-blur-xl border-white/30" :ui="{ body: 'p-6' }">
-      <div class="text-center py-12">
+      <!-- Not Started -->
+      <div v-if="!selfAssessmentStarted && !selfAssessmentCompleted" class="text-center py-12">
         <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center mb-6">
           <UIcon name="i-lucide-user" class="size-10 text-white" />
         </div>
@@ -226,21 +277,181 @@ const getCurrentAnswer = computed(() => {
         <p class="text-gray-600 max-w-lg mx-auto mb-8">
           Reflect on your performance, achievements, and areas for growth this quarter.
         </p>
-        <UButton size="lg" class="bg-gradient-to-r from-blue-400 to-cyan-500">Start Self Assessment</UButton>
+        <UButton size="lg" class="bg-gradient-to-r from-blue-400 to-cyan-500" @click="selfAssessmentStarted = true">Start Self Assessment</UButton>
+      </div>
+
+      <!-- In Progress -->
+      <div v-else-if="selfAssessmentStarted && !selfAssessmentCompleted" class="max-w-2xl mx-auto">
+        <!-- Progress -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-700">Progress</span>
+            <span class="text-sm text-gray-500">{{ selfAssessmentStep + 1 }} / {{ selfAssessmentQuestions.length }}</span>
+          </div>
+          <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-cyan-500 transition-all duration-300" :style="{ width: `${((selfAssessmentStep + 1) / selfAssessmentQuestions.length) * 100}%` }" />
+          </div>
+        </div>
+
+        <!-- Question -->
+        <UCard class="mb-8" :key="selfAssessmentStep" :ui="{ body: 'p-8' }">
+          <p class="text-xl text-gray-900 font-medium leading-relaxed mb-6">
+            {{ selfAssessmentQuestions[selfAssessmentStep].question }}
+          </p>
+
+          <UTextarea
+            v-if="selfAssessmentQuestions[selfAssessmentStep].type === 'textarea'"
+            v-model="selfAssessmentAnswers[selfAssessmentQuestions[selfAssessmentStep].id]"
+            :rows="5"
+            placeholder="Enter your response..."
+            size="lg"
+          />
+
+          <div v-else class="grid grid-cols-5 gap-3">
+            <button
+              v-for="n in 5"
+              :key="n"
+              @click="selfAssessmentAnswers[selfAssessmentQuestions[selfAssessmentStep].id] = n"
+              class="p-4 rounded-xl border-2 transition-all duration-200 text-center"
+              :class="selfAssessmentAnswers[selfAssessmentQuestions[selfAssessmentStep].id] === n
+                ? 'border-cyan-500 bg-cyan-50 shadow-lg'
+                : 'border-gray-200 hover:border-cyan-300 hover:bg-gray-50'"
+            >
+              <div class="text-2xl font-bold text-gray-900">{{ n }}</div>
+            </button>
+          </div>
+        </UCard>
+
+        <!-- Navigation -->
+        <div class="flex items-center justify-between">
+          <UButton
+            variant="ghost"
+            color="neutral"
+            :disabled="selfAssessmentStep === 0"
+            @click="selfAssessmentStep--"
+          >
+            Previous
+          </UButton>
+          <UButton
+            class="bg-gradient-to-r from-blue-400 to-cyan-500"
+            @click="submitSelfAssessment"
+          >
+            {{ selfAssessmentStep === selfAssessmentQuestions.length - 1 ? 'Submit' : 'Next' }}
+          </UButton>
+        </div>
+      </div>
+
+      <!-- Completed -->
+      <div v-else class="text-center py-12">
+        <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center mb-6">
+          <UIcon name="i-lucide-check" class="size-10 text-white" />
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Self Assessment Complete!</h2>
+        <p class="text-gray-600 max-w-lg mx-auto mb-8">
+          Your self assessment has been submitted. Your manager will be notified.
+        </p>
+        <div class="flex items-center justify-center gap-4">
+          <UButton variant="outline" to="/dashboard">View Dashboard</UButton>
+          <UButton class="bg-gradient-to-r from-violet-500 to-purple-600" to="/coach">Talk to AI Coach</UButton>
+        </div>
       </div>
     </UCard>
 
     <!-- Company Assessment -->
     <UCard v-else class="bg-white/80 backdrop-blur-xl border-white/30" :ui="{ body: 'p-6' }">
-      <div class="text-center py-12">
+      <!-- Not Started -->
+      <div v-if="!companyAssessmentStarted && !companyAssessmentCompleted" class="text-center py-12">
         <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-6">
           <UIcon name="i-lucide-building-2" class="size-10 text-white" />
         </div>
         <h2 class="text-2xl font-bold text-gray-900 mb-2">Company Culture Assessment</h2>
         <p class="text-gray-600 max-w-lg mx-auto mb-8">
-          Share your feedback on company culture, values, and work environment.
+          Share your feedback on company culture, values, and work environment. Your responses are anonymous.
         </p>
-        <UButton size="lg" class="bg-gradient-to-r from-amber-400 to-orange-500">Start Company Assessment</UButton>
+        <UAlert color="info" variant="subtle" icon="i-lucide-shield" class="max-w-lg mx-auto mb-6">
+          <template #title>Anonymous Survey</template>
+          <template #description>Your individual responses will not be linked to your identity.</template>
+        </UAlert>
+        <UButton size="lg" class="bg-gradient-to-r from-amber-400 to-orange-500" @click="companyAssessmentStarted = true">Start Company Assessment</UButton>
+      </div>
+
+      <!-- In Progress -->
+      <div v-else-if="companyAssessmentStarted && !companyAssessmentCompleted" class="max-w-2xl mx-auto">
+        <!-- Progress -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-700">Progress</span>
+            <span class="text-sm text-gray-500">{{ companyAssessmentStep + 1 }} / {{ companyAssessmentQuestions.length }}</span>
+          </div>
+          <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-orange-500 transition-all duration-300" :style="{ width: `${((companyAssessmentStep + 1) / companyAssessmentQuestions.length) * 100}%` }" />
+          </div>
+        </div>
+
+        <!-- Question -->
+        <UCard class="mb-8" :key="companyAssessmentStep" :ui="{ body: 'p-8' }">
+          <p class="text-xl text-gray-900 font-medium leading-relaxed mb-6">
+            {{ companyAssessmentQuestions[companyAssessmentStep].question }}
+          </p>
+
+          <UTextarea
+            v-if="companyAssessmentQuestions[companyAssessmentStep].type === 'textarea'"
+            v-model="companyAssessmentAnswers[companyAssessmentQuestions[companyAssessmentStep].id]"
+            :rows="5"
+            placeholder="Enter your response..."
+            size="lg"
+          />
+
+          <div v-else>
+            <p class="text-sm text-gray-500 mb-4 text-center">{{ companyAssessmentQuestions[companyAssessmentStep].label }}</p>
+            <div class="grid grid-cols-5 gap-3">
+              <button
+                v-for="n in 5"
+                :key="n"
+                @click="companyAssessmentAnswers[companyAssessmentQuestions[companyAssessmentStep].id] = n"
+                class="p-4 rounded-xl border-2 transition-all duration-200 text-center"
+                :class="companyAssessmentAnswers[companyAssessmentQuestions[companyAssessmentStep].id] === n
+                  ? 'border-orange-500 bg-orange-50 shadow-lg'
+                  : 'border-gray-200 hover:border-orange-300 hover:bg-gray-50'"
+              >
+                <div class="text-2xl font-bold text-gray-900">{{ n }}</div>
+              </button>
+            </div>
+          </div>
+        </UCard>
+
+        <!-- Navigation -->
+        <div class="flex items-center justify-between">
+          <UButton
+            variant="ghost"
+            color="neutral"
+            :disabled="companyAssessmentStep === 0"
+            @click="companyAssessmentStep--"
+          >
+            Previous
+          </UButton>
+          <UButton
+            class="bg-gradient-to-r from-amber-400 to-orange-500"
+            @click="submitCompanyAssessment"
+          >
+            {{ companyAssessmentStep === companyAssessmentQuestions.length - 1 ? 'Submit' : 'Next' }}
+          </UButton>
+        </div>
+      </div>
+
+      <!-- Completed -->
+      <div v-else class="text-center py-12">
+        <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center mb-6">
+          <UIcon name="i-lucide-check" class="size-10 text-white" />
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Thank You!</h2>
+        <p class="text-gray-600 max-w-lg mx-auto mb-8">
+          Your anonymous feedback has been submitted. This helps us improve our workplace culture.
+        </p>
+        <div class="flex items-center justify-center gap-4">
+          <UButton variant="outline" to="/dashboard">View Dashboard</UButton>
+          <UButton class="bg-gradient-to-r from-violet-500 to-purple-600" to="/reports">View Reports</UButton>
+        </div>
       </div>
     </UCard>
   </div>
