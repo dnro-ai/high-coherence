@@ -188,7 +188,7 @@ h4, h5, h6 {
 }
 
 .metric-circle-large {
-  @apply w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-teal-500/20 border-2 border-cyan-400/40;
+  @apply w-32 h-32 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/20 border-2 border-cyan-400/40;
   box-shadow: 0 0 30px rgba(6, 182, 212, 0.3);
 }
 
