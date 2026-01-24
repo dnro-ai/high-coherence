@@ -123,10 +123,10 @@ const openResultsModal = (employee: typeof employees.value[0]) => {
 }
 
 const getScoreColor = (score: number) => {
-  if (score >= 4.5) return 'success'
-  if (score >= 3.5) return 'primary'
-  if (score >= 2.5) return 'warning'
-  return 'error'
+  if (score >= 4.5) return 'emerald'
+  if (score >= 3.5) return 'cyan'
+  if (score >= 2.5) return 'amber'
+  return 'rose'
 }
 
 const stats = [
@@ -141,175 +141,199 @@ const stats = [
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900">360 Reviews</h1>
-        <p class="text-gray-500 mt-1">Manage anonymous feedback and view aggregated results</p>
+        <h1 class="text-4xl font-bold text-white drop-shadow-lg">360 Reviews</h1>
+        <p class="text-white/70 mt-1">Manage anonymous feedback and view aggregated results</p>
       </div>
     </div>
 
     <!-- Stats -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <UCard v-for="stat in stats" :key="stat.label" class="bg-white" :ui="{ body: 'p-5' }">
+      <div v-for="stat in stats" :key="stat.label" class="glass p-5">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm text-gray-500">{{ stat.label }}</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
+            <p class="text-sm text-white/60">{{ stat.label }}</p>
+            <p class="text-2xl font-bold text-white mt-1">{{ stat.value }}</p>
           </div>
-          <div class="size-12 rounded-xl bg-blue-50 flex items-center justify-center">
-            <UIcon :name="stat.icon" class="size-6 text-blue-600" />
+          <div class="size-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-teal-500/20 border border-cyan-500/30 flex items-center justify-center">
+            <UIcon :name="stat.icon" class="size-6 text-cyan-400" />
           </div>
         </div>
-      </UCard>
+      </div>
     </div>
 
     <!-- Tabs -->
     <div class="flex gap-2">
-      <UButton
-        :variant="activeTab === 'employees' ? 'solid' : 'ghost'"
-        :color="activeTab === 'employees' ? 'primary' : 'neutral'"
+      <button
         @click="activeTab = 'employees'"
+        :class="[
+          'px-5 py-3 rounded-xl text-sm font-medium transition-all duration-300',
+          activeTab === 'employees'
+            ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white'
+            : 'text-white/60 hover:bg-white/10 hover:text-white'
+        ]"
       >
         Employee Results
-      </UButton>
-      <UButton
-        :variant="activeTab === 'pending' ? 'solid' : 'ghost'"
-        :color="activeTab === 'pending' ? 'primary' : 'neutral'"
+      </button>
+      <button
         @click="activeTab = 'pending'"
+        :class="[
+          'px-5 py-3 rounded-xl text-sm font-medium transition-all duration-300',
+          activeTab === 'pending'
+            ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white'
+            : 'text-white/60 hover:bg-white/10 hover:text-white'
+        ]"
       >
         Pending Reviews
-      </UButton>
+      </button>
     </div>
 
     <!-- Employee Results Table -->
-    <UCard v-if="activeTab === 'employees'" class="bg-white">
-      <template #header>
-        <div class="flex items-center justify-between">
-          <h2 class="text-lg font-semibold text-gray-900">Aggregated Review Results</h2>
-          <p class="text-sm text-gray-500">Anonymous feedback summary per employee</p>
-        </div>
-      </template>
+    <div v-if="activeTab === 'employees'" class="glass p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-lg font-semibold text-white">Aggregated Review Results</h2>
+        <p class="text-sm text-white/50">Anonymous feedback summary per employee</p>
+      </div>
 
       <div class="overflow-x-auto">
         <table class="w-full">
           <thead>
-            <tr class="border-b border-gray-200">
-              <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">Employee</th>
-              <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">Reviews</th>
-              <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">Avg Score</th>
-              <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">Top Strength</th>
-              <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">Focus Area</th>
-              <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">Status</th>
-              <th class="text-right py-3 px-4 text-sm font-medium text-gray-500">Actions</th>
+            <tr class="border-b border-white/10">
+              <th class="text-left py-3 px-4 text-sm font-medium text-white/60">Employee</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-white/60">Reviews</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-white/60">Avg Score</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-white/60">Top Strength</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-white/60">Focus Area</th>
+              <th class="text-left py-3 px-4 text-sm font-medium text-white/60">Status</th>
+              <th class="text-right py-3 px-4 text-sm font-medium text-white/60">Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr
               v-for="emp in employees"
               :key="emp.id"
-              class="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+              class="border-b border-white/5 hover:bg-white/5 transition-colors"
             >
               <td class="py-4 px-4">
                 <div class="flex items-center gap-3">
-                  <UAvatar :text="emp.name.split(' ').map(n => n[0]).join('')" size="sm" class="bg-blue-100 text-blue-700" />
+                  <div class="size-10 rounded-full bg-gradient-to-br from-cyan-500/30 to-teal-500/30 border border-cyan-500/30 flex items-center justify-center text-white text-sm font-medium">
+                    {{ emp.name.split(' ').map(n => n[0]).join('') }}
+                  </div>
                   <div>
-                    <p class="font-medium text-gray-900">{{ emp.name }}</p>
-                    <p class="text-sm text-gray-500">{{ emp.role }}</p>
+                    <p class="font-medium text-white">{{ emp.name }}</p>
+                    <p class="text-sm text-white/50">{{ emp.role }}</p>
                   </div>
                 </div>
               </td>
               <td class="py-4 px-4">
-                <span class="text-gray-900">{{ emp.reviewsReceived }}</span>
+                <span class="text-white">{{ emp.reviewsReceived }}</span>
               </td>
               <td class="py-4 px-4">
-                <UBadge :color="getScoreColor(emp.avgScore)" variant="subtle">
+                <span
+                  :class="[
+                    'px-3 py-1 rounded-full text-sm font-medium',
+                    getScoreColor(emp.avgScore) === 'emerald' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
+                    getScoreColor(emp.avgScore) === 'cyan' ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' :
+                    getScoreColor(emp.avgScore) === 'amber' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+                    'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                  ]"
+                >
                   {{ emp.avgScore.toFixed(1) }} / 5
-                </UBadge>
+                </span>
               </td>
               <td class="py-4 px-4">
-                <span class="text-gray-700">{{ emp.topStrength }}</span>
+                <span class="text-white/80">{{ emp.topStrength }}</span>
               </td>
               <td class="py-4 px-4">
-                <span class="text-gray-700">{{ emp.improvementArea }}</span>
+                <span class="text-white/80">{{ emp.improvementArea }}</span>
               </td>
               <td class="py-4 px-4">
-                <UBadge v-if="emp.canBePromoted" color="success" variant="subtle">
+                <span
+                  v-if="emp.canBePromoted"
+                  class="px-3 py-1 rounded-full text-sm font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                >
                   Promotion Ready
-                </UBadge>
-                <UBadge v-else color="neutral" variant="subtle">
+                </span>
+                <span
+                  v-else
+                  class="px-3 py-1 rounded-full text-sm font-medium bg-white/10 text-white/60 border border-white/20"
+                >
                   In Progress
-                </UBadge>
+                </span>
               </td>
               <td class="py-4 px-4 text-right">
                 <div class="flex items-center justify-end gap-2">
-                  <UButton
-                    variant="ghost"
-                    size="sm"
-                    icon="i-lucide-mail"
+                  <button
                     @click="openInviteModal(emp)"
+                    class="px-3 py-2 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all text-sm flex items-center gap-2"
                   >
+                    <UIcon name="i-lucide-mail" class="size-4" />
                     Send Invite
-                  </UButton>
-                  <UButton
-                    variant="soft"
-                    size="sm"
-                    icon="i-lucide-bar-chart-3"
+                  </button>
+                  <button
                     @click="openResultsModal(emp)"
+                    class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all text-sm flex items-center gap-2"
                   >
+                    <UIcon name="i-lucide-bar-chart-3" class="size-4" />
                     View Details
-                  </UButton>
+                  </button>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </UCard>
+    </div>
 
     <!-- Pending Reviews -->
-    <UCard v-else class="bg-white">
-      <template #header>
-        <h2 class="text-lg font-semibold text-gray-900">Pending Review Invites</h2>
-      </template>
+    <div v-else class="glass p-6">
+      <h2 class="text-lg font-semibold text-white mb-6">Pending Review Invites</h2>
 
-      <div class="text-center py-12 text-gray-500">
-        <UIcon name="i-lucide-inbox" class="size-12 mx-auto mb-4 text-gray-300" />
+      <div class="text-center py-12 text-white/50">
+        <UIcon name="i-lucide-inbox" class="size-12 mx-auto mb-4 text-white/30" />
         <p>No pending invites to track</p>
         <p class="text-sm mt-1">Send review invites from the Employee Results tab</p>
       </div>
-    </UCard>
+    </div>
 
     <!-- Send Invite Modal -->
     <UModal v-model:open="showInviteModal">
       <template #content>
-        <div class="p-6 max-h-[85vh] overflow-y-auto">
+        <div class="p-6 max-h-[85vh] overflow-y-auto bg-gradient-to-br from-blue-900/95 via-teal-800/95 to-cyan-700/95 backdrop-blur-xl rounded-2xl border border-white/20">
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-semibold text-gray-900">Send Review Invites</h2>
-            <UButton variant="ghost" icon="i-lucide-x" @click="showInviteModal = false" />
+            <h2 class="text-xl font-semibold text-white">Send Review Invites</h2>
+            <button @click="showInviteModal = false" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+              <UIcon name="i-lucide-x" class="size-5 text-white/60" />
+            </button>
           </div>
 
           <div v-if="selectedEmployee" class="space-y-6">
-            <UAlert
-              color="info"
-              variant="subtle"
-              icon="i-lucide-shield"
-              title="Anonymous Reviews"
-              description="Recipients will provide anonymous feedback. Their identity will not be linked to their responses."
-            />
-
-            <div class="p-4 rounded-xl bg-gray-50">
-              <p class="text-sm text-gray-500">Requesting feedback for:</p>
-              <p class="font-semibold text-gray-900">{{ selectedEmployee.name }}</p>
-              <p class="text-sm text-gray-500">{{ selectedEmployee.role }} • {{ selectedEmployee.department }}</p>
+            <div class="glass p-4 flex items-center gap-3">
+              <UIcon name="i-lucide-shield" class="size-5 text-cyan-400" />
+              <div>
+                <p class="text-white text-sm font-medium">Anonymous Reviews</p>
+                <p class="text-white/60 text-xs">Recipients will provide anonymous feedback. Their identity will not be linked to their responses.</p>
+              </div>
             </div>
 
-            <UFormField label="Reviewer Emails" hint="Separate multiple emails with commas">
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+              <p class="text-sm text-white/50">Requesting feedback for:</p>
+              <p class="font-semibold text-white">{{ selectedEmployee.name }}</p>
+              <p class="text-sm text-white/50">{{ selectedEmployee.role }} - {{ selectedEmployee.department }}</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-white/70 mb-2">Reviewer Emails</label>
+              <p class="text-xs text-white/50 mb-2">Separate multiple emails with commas</p>
               <UTextarea
                 v-model="inviteForm.emails"
                 placeholder="reviewer1@company.com, reviewer2@company.com"
                 :rows="3"
+                class="bg-white/10 border-white/20 text-white"
               />
-            </UFormField>
+            </div>
 
-            <UFormField label="Review Type">
+            <div>
+              <label class="block text-sm font-medium text-white/70 mb-2">Review Type</label>
               <USelect
                 v-model="inviteForm.reviewType"
                 :items="[
@@ -317,21 +341,23 @@ const stats = [
                   { label: 'Manager Review', value: 'manager' },
                   { label: 'Direct Report Review', value: 'direct-report' }
                 ]"
+                class="bg-white/10 border-white/20 text-white"
               />
-            </UFormField>
+            </div>
 
             <div class="flex justify-end gap-3">
-              <UButton variant="ghost" color="neutral" @click="showInviteModal = false">
+              <button @click="showInviteModal = false" class="px-4 py-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all">
                 Cancel
-              </UButton>
-              <UButton
-                :loading="sendingInvites"
-                :disabled="!inviteForm.emails"
-                icon="i-lucide-send"
+              </button>
+              <button
+                :disabled="!inviteForm.emails || sendingInvites"
                 @click="sendInvites"
+                class="px-6 py-2 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-bold rounded-xl transition-all disabled:opacity-50 flex items-center gap-2"
               >
+                <UIcon v-if="sendingInvites" name="i-lucide-loader-2" class="size-4 animate-spin" />
+                <UIcon v-else name="i-lucide-send" class="size-4" />
                 Send Invites
-              </UButton>
+              </button>
             </div>
           </div>
         </div>
@@ -341,102 +367,108 @@ const stats = [
     <!-- Detailed Results Modal -->
     <UModal v-model:open="showResultsModal" :ui="{ width: 'max-w-3xl' }">
       <template #content>
-        <div class="p-6 max-h-[85vh] overflow-y-auto">
+        <div class="p-6 max-h-[85vh] overflow-y-auto bg-gradient-to-br from-blue-900/95 via-teal-800/95 to-cyan-700/95 backdrop-blur-xl rounded-2xl border border-white/20">
           <div class="flex items-center justify-between mb-6">
             <div>
-              <h2 class="text-xl font-semibold text-gray-900">Review Results</h2>
-              <p class="text-gray-500" v-if="selectedEmployeeResults">{{ selectedEmployeeResults.name }}</p>
+              <h2 class="text-xl font-semibold text-white">Review Results</h2>
+              <p class="text-white/50" v-if="selectedEmployeeResults">{{ selectedEmployeeResults.name }}</p>
             </div>
-            <UButton variant="ghost" icon="i-lucide-x" @click="showResultsModal = false" />
+            <button @click="showResultsModal = false" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+              <UIcon name="i-lucide-x" class="size-5 text-white/60" />
+            </button>
           </div>
 
           <div v-if="selectedEmployeeResults" class="space-y-6">
             <!-- Score Summary -->
             <div class="grid grid-cols-3 gap-4">
-              <UCard variant="subtle" :ui="{ body: 'p-4 text-center' }">
-                <p class="text-3xl font-bold text-gray-900">{{ mockDetailedResults.performance.avg }}</p>
-                <p class="text-sm text-gray-500">Performance</p>
-                <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden mt-2">
-                  <div class="h-full rounded-full bg-primary-500" :style="{ width: `${mockDetailedResults.performance.avg * 20}%` }" />
+              <div class="glass p-4 text-center">
+                <p class="text-3xl font-bold text-white">{{ mockDetailedResults.performance.avg }}</p>
+                <p class="text-sm text-white/50">Performance</p>
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mt-2">
+                  <div class="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-500" :style="{ width: `${mockDetailedResults.performance.avg * 20}%` }" />
                 </div>
-              </UCard>
-              <UCard variant="subtle" :ui="{ body: 'p-4 text-center' }">
-                <p class="text-3xl font-bold text-gray-900">{{ mockDetailedResults.collaboration.avg }}</p>
-                <p class="text-sm text-gray-500">Collaboration</p>
-                <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden mt-2">
-                  <div class="h-full rounded-full bg-emerald-500" :style="{ width: `${mockDetailedResults.collaboration.avg * 20}%` }" />
+              </div>
+              <div class="glass p-4 text-center">
+                <p class="text-3xl font-bold text-white">{{ mockDetailedResults.collaboration.avg }}</p>
+                <p class="text-sm text-white/50">Collaboration</p>
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mt-2">
+                  <div class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-green-500" :style="{ width: `${mockDetailedResults.collaboration.avg * 20}%` }" />
                 </div>
-              </UCard>
-              <UCard variant="subtle" :ui="{ body: 'p-4 text-center' }">
-                <p class="text-3xl font-bold text-gray-900">{{ mockDetailedResults.leadership.avg }}</p>
-                <p class="text-sm text-gray-500">Leadership</p>
-                <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden mt-2">
-                  <div class="h-full rounded-full bg-amber-500" :style="{ width: `${mockDetailedResults.leadership.avg * 20}%` }" />
+              </div>
+              <div class="glass p-4 text-center">
+                <p class="text-3xl font-bold text-white">{{ mockDetailedResults.leadership.avg }}</p>
+                <p class="text-sm text-white/50">Leadership</p>
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mt-2">
+                  <div class="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500" :style="{ width: `${mockDetailedResults.leadership.avg * 20}%` }" />
                 </div>
-              </UCard>
+              </div>
             </div>
 
             <!-- Anonymous Feedback -->
             <div class="space-y-4">
-              <h3 class="font-semibold text-gray-900">Anonymous Feedback Summary</h3>
+              <h3 class="font-semibold text-white">Anonymous Feedback Summary</h3>
 
-              <UCard variant="subtle" :ui="{ body: 'p-4' }">
-                <h4 class="font-medium text-green-700 mb-2 flex items-center gap-2">
+              <div class="glass p-4">
+                <h4 class="font-medium text-emerald-400 mb-2 flex items-center gap-2">
                   <UIcon name="i-lucide-thumbs-up" class="size-4" />
                   Key Strengths
                 </h4>
                 <ul class="space-y-2">
-                  <li v-for="(strength, i) in mockDetailedResults.comments.strengths" :key="i" class="text-sm text-gray-700 flex items-start gap-2">
-                    <span class="text-green-500 mt-1">•</span>
+                  <li v-for="(strength, i) in mockDetailedResults.comments.strengths" :key="i" class="text-sm text-white/80 flex items-start gap-2">
+                    <span class="text-emerald-500 mt-1">-</span>
                     {{ strength }}
                   </li>
                 </ul>
-              </UCard>
+              </div>
 
-              <UCard variant="subtle" :ui="{ body: 'p-4' }">
-                <h4 class="font-medium text-amber-700 mb-2 flex items-center gap-2">
+              <div class="glass p-4">
+                <h4 class="font-medium text-amber-400 mb-2 flex items-center gap-2">
                   <UIcon name="i-lucide-target" class="size-4" />
                   Areas for Improvement
                 </h4>
                 <ul class="space-y-2">
-                  <li v-for="(item, i) in mockDetailedResults.comments.improvements" :key="i" class="text-sm text-gray-700 flex items-start gap-2">
-                    <span class="text-amber-500 mt-1">•</span>
+                  <li v-for="(item, i) in mockDetailedResults.comments.improvements" :key="i" class="text-sm text-white/80 flex items-start gap-2">
+                    <span class="text-amber-500 mt-1">-</span>
                     {{ item }}
                   </li>
                 </ul>
-              </UCard>
+              </div>
 
-              <UCard variant="subtle" :ui="{ body: 'p-4' }">
-                <h4 class="font-medium text-blue-700 mb-2 flex items-center gap-2">
+              <div class="glass p-4">
+                <h4 class="font-medium text-cyan-400 mb-2 flex items-center gap-2">
                   <UIcon name="i-lucide-lightbulb" class="size-4" />
                   Recommendations & Tips
                 </h4>
                 <ul class="space-y-2">
-                  <li v-for="(rec, i) in mockDetailedResults.comments.recommendations" :key="i" class="text-sm text-gray-700 flex items-start gap-2">
-                    <span class="text-blue-500 mt-1">•</span>
+                  <li v-for="(rec, i) in mockDetailedResults.comments.recommendations" :key="i" class="text-sm text-white/80 flex items-start gap-2">
+                    <span class="text-cyan-500 mt-1">-</span>
                     {{ rec }}
                   </li>
                 </ul>
-              </UCard>
+              </div>
             </div>
 
             <!-- Promotion Recommendation -->
-            <UAlert
+            <div
               v-if="selectedEmployeeResults.canBePromoted"
-              color="success"
-              variant="subtle"
-              icon="i-lucide-award"
-              title="Recommended for Promotion"
-              description="Based on aggregated feedback, this employee demonstrates consistent high performance and is ready for increased responsibility."
-            />
-            <UAlert
+              class="glass p-4 flex items-center gap-3 border-emerald-500/30"
+            >
+              <UIcon name="i-lucide-award" class="size-5 text-emerald-400" />
+              <div>
+                <p class="text-emerald-400 text-sm font-medium">Recommended for Promotion</p>
+                <p class="text-white/60 text-xs">Based on aggregated feedback, this employee demonstrates consistent high performance and is ready for increased responsibility.</p>
+              </div>
+            </div>
+            <div
               v-else
-              color="warning"
-              variant="subtle"
-              icon="i-lucide-clock"
-              title="Development in Progress"
-              description="This employee shows promise but needs more time to develop in key areas before promotion consideration."
-            />
+              class="glass p-4 flex items-center gap-3 border-amber-500/30"
+            >
+              <UIcon name="i-lucide-clock" class="size-5 text-amber-400" />
+              <div>
+                <p class="text-amber-400 text-sm font-medium">Development in Progress</p>
+                <p class="text-white/60 text-xs">This employee shows promise but needs more time to develop in key areas before promotion consideration.</p>
+              </div>
+            </div>
           </div>
         </div>
       </template>

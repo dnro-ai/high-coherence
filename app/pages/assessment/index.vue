@@ -147,47 +147,53 @@ const submitCompanyAssessment = () => {
   <div class="space-y-6">
     <!-- Header -->
     <div>
-      <h1 class="text-2xl font-bold text-white">Assessments</h1>
+      <h1 class="text-4xl font-bold text-white drop-shadow-lg">Assessments</h1>
       <p class="text-white/70 mt-1">Complete your personality and performance assessments</p>
     </div>
 
     <!-- Assessment Type Tabs -->
-    <UTabs
-      :items="assessmentTypes"
-      v-model="activeTab"
-      class="w-auto"
-      :ui="{
-        list: 'bg-white/80 backdrop-blur-xl rounded-xl p-1',
-        trigger: 'data-[state=active]:bg-white data-[state=active]:shadow-sm'
-      }"
-    />
+    <div class="flex gap-2">
+      <button
+        v-for="type in assessmentTypes"
+        :key="type.id"
+        @click="activeTab = type.id"
+        :class="[
+          'px-5 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2',
+          activeTab === type.id
+            ? 'bg-white/20 backdrop-blur-md text-white border border-white/30'
+            : 'text-white/60 hover:bg-white/10 hover:text-white border border-transparent'
+        ]"
+      >
+        <UIcon :name="type.icon" class="size-5" />
+        {{ type.label }}
+      </button>
+    </div>
 
     <!-- HEXACO Assessment -->
-    <UCard v-if="activeTab === 'hexaco'" class="bg-white/80 backdrop-blur-xl border-white/30" :ui="{ body: 'p-6' }">
+    <div v-if="activeTab === 'hexaco'" class="glass p-8">
       <!-- Not Started State -->
       <div v-if="!isStarted && !isCompleted" class="text-center py-12">
-        <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center mb-6">
+        <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center mb-6 glow-cyan">
           <UIcon name="i-lucide-fingerprint" class="size-10 text-white" />
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">HEXACO Personality Assessment</h2>
-        <p class="text-gray-600 max-w-lg mx-auto mb-8">
+        <h2 class="text-2xl font-bold text-white mb-2">HEXACO Personality Assessment</h2>
+        <p class="text-white/70 max-w-lg mx-auto mb-8">
           The HEXACO model measures six major dimensions of personality. This assessment takes approximately 10-15 minutes to complete.
         </p>
 
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl mx-auto mb-8">
-          <UCard v-for="trait in traits" :key="trait" variant="subtle" :ui="{ body: 'p-4' }">
-            <h3 class="font-semibold text-gray-900 text-sm">{{ trait }}</h3>
-            <p class="text-xs text-gray-500 mt-1">{{ hexacoQuestions[trait as keyof typeof hexacoQuestions].length }} questions</p>
-          </UCard>
+          <div v-for="trait in traits" :key="trait" class="glass p-4 rounded-2xl">
+            <h3 class="font-semibold text-white text-sm">{{ trait }}</h3>
+            <p class="text-xs text-white/50 mt-1">{{ hexacoQuestions[trait as keyof typeof hexacoQuestions].length }} questions</p>
+          </div>
         </div>
 
-        <UButton
-          size="lg"
-          class="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700"
+        <button
           @click="isStarted = true"
+          class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_0_rgba(6,182,212,0.3)] active:scale-95"
         >
           Begin Assessment
-        </UButton>
+        </button>
       </div>
 
       <!-- Assessment In Progress -->
@@ -195,28 +201,28 @@ const submitCompanyAssessment = () => {
         <!-- Progress Bar -->
         <div class="mb-8">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-gray-700">Progress</span>
-            <span class="text-sm text-gray-500">{{ progress }}%</span>
+            <span class="text-sm font-medium text-white/70">Progress</span>
+            <span class="text-sm text-white/50">{{ progress }}%</span>
           </div>
-          <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-primary-500 transition-all duration-300" :style="{ width: `${progress}%` }" />
+          <div class="progress-bar">
+            <div class="progress-fill bg-gradient-to-r from-cyan-500 to-teal-500 transition-all duration-300" :style="{ width: `${progress}%` }" />
           </div>
         </div>
 
         <!-- Current Trait Badge -->
-        <div class="flex items-center gap-2 mb-6">
-          <UBadge color="primary" size="lg">{{ currentTrait }}</UBadge>
-          <span class="text-gray-500 text-sm">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white text-sm font-medium">{{ currentTrait }}</span>
+          <span class="text-white/50 text-sm">
             Question {{ currentQuestionIndex + 1 }} of {{ currentQuestions.length }}
           </span>
         </div>
 
         <!-- Question -->
-        <UCard class="mb-8 animate-fade-in-up" :key="`${currentTraitIndex}-${currentQuestionIndex}`" :ui="{ body: 'p-8' }">
-          <p class="text-xl text-gray-900 font-medium leading-relaxed">
+        <div class="glass p-8 mb-8 animate-fade-in-up" :key="`${currentTraitIndex}-${currentQuestionIndex}`">
+          <p class="text-xl text-white font-medium leading-relaxed">
             {{ currentQuestion }}
           </p>
-        </UCard>
+        </div>
 
         <!-- Answer Options -->
         <div class="grid grid-cols-5 gap-3">
@@ -226,27 +232,26 @@ const submitCompanyAssessment = () => {
             @click="selectAnswer(option.value)"
             class="p-4 rounded-xl border-2 transition-all duration-200 text-center"
             :class="getCurrentAnswer === option.value
-              ? 'border-violet-500 bg-violet-50 shadow-lg'
-              : 'border-gray-200 hover:border-violet-300 hover:bg-gray-50'"
+              ? 'border-cyan-500 bg-cyan-500/20 shadow-lg glow-cyan'
+              : 'border-white/20 hover:border-cyan-400/50 hover:bg-white/5 bg-white/5'"
           >
-            <div class="text-2xl font-bold text-gray-900 mb-1">{{ option.value }}</div>
-            <div class="text-xs text-gray-500">{{ option.label }}</div>
+            <div class="text-2xl font-bold text-white mb-1">{{ option.value }}</div>
+            <div class="text-xs text-white/50">{{ option.label }}</div>
           </button>
         </div>
 
         <!-- Navigation -->
         <div class="flex items-center justify-between mt-8">
-          <UButton
-            variant="ghost"
-            color="neutral"
+          <button
             :disabled="currentTraitIndex === 0 && currentQuestionIndex === 0"
             @click="currentQuestionIndex > 0 ? currentQuestionIndex-- : (currentTraitIndex--, currentQuestionIndex = currentQuestions.length - 1)"
+            class="px-4 py-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all disabled:opacity-30"
           >
             Previous
-          </UButton>
-          <UButton variant="ghost" color="neutral" @click="isStarted = false">
+          </button>
+          <button @click="isStarted = false" class="px-4 py-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all">
             Save & Exit
-          </UButton>
+          </button>
         </div>
       </div>
 
@@ -255,29 +260,38 @@ const submitCompanyAssessment = () => {
         <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center mb-6">
           <UIcon name="i-lucide-check" class="size-10 text-white" />
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Assessment Complete!</h2>
-        <p class="text-gray-600 max-w-lg mx-auto mb-8">
+        <h2 class="text-2xl font-bold text-white mb-2">Assessment Complete!</h2>
+        <p class="text-white/70 max-w-lg mx-auto mb-8">
           Your HEXACO assessment has been submitted. Results will be available in your dashboard shortly.
         </p>
         <div class="flex items-center justify-center gap-4">
-          <UButton variant="outline" to="/dashboard">View Dashboard</UButton>
-          <UButton class="bg-gradient-to-r from-violet-500 to-purple-600" to="/coach">Talk to AI Coach</UButton>
+          <NuxtLink to="/dashboard" class="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl transition-all">
+            View Dashboard
+          </NuxtLink>
+          <NuxtLink to="/coach" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-bold rounded-xl transition-all">
+            Talk to AI Coach
+          </NuxtLink>
         </div>
       </div>
-    </UCard>
+    </div>
 
     <!-- Self Assessment -->
-    <UCard v-else-if="activeTab === 'self'" class="bg-white/80 backdrop-blur-xl border-white/30" :ui="{ body: 'p-6' }">
+    <div v-else-if="activeTab === 'self'" class="glass p-8">
       <!-- Not Started -->
       <div v-if="!selfAssessmentStarted && !selfAssessmentCompleted" class="text-center py-12">
-        <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center mb-6">
+        <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center mb-6 glow-cyan">
           <UIcon name="i-lucide-user" class="size-10 text-white" />
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Self Assessment</h2>
-        <p class="text-gray-600 max-w-lg mx-auto mb-8">
+        <h2 class="text-2xl font-bold text-white mb-2">Self Assessment</h2>
+        <p class="text-white/70 max-w-lg mx-auto mb-8">
           Reflect on your performance, achievements, and areas for growth this quarter.
         </p>
-        <UButton size="lg" class="bg-gradient-to-r from-blue-400 to-cyan-500" @click="selfAssessmentStarted = true">Start Self Assessment</UButton>
+        <button
+          @click="selfAssessmentStarted = true"
+          class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_0_rgba(6,182,212,0.3)] active:scale-95"
+        >
+          Start Self Assessment
+        </button>
       </div>
 
       <!-- In Progress -->
@@ -285,17 +299,17 @@ const submitCompanyAssessment = () => {
         <!-- Progress -->
         <div class="mb-8">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-gray-700">Progress</span>
-            <span class="text-sm text-gray-500">{{ selfAssessmentStep + 1 }} / {{ selfAssessmentQuestions.length }}</span>
+            <span class="text-sm font-medium text-white/70">Progress</span>
+            <span class="text-sm text-white/50">{{ selfAssessmentStep + 1 }} / {{ selfAssessmentQuestions.length }}</span>
           </div>
-          <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-cyan-500 transition-all duration-300" :style="{ width: `${((selfAssessmentStep + 1) / selfAssessmentQuestions.length) * 100}%` }" />
+          <div class="progress-bar">
+            <div class="progress-fill bg-gradient-to-r from-cyan-500 to-teal-500 transition-all duration-300" :style="{ width: `${((selfAssessmentStep + 1) / selfAssessmentQuestions.length) * 100}%` }" />
           </div>
         </div>
 
         <!-- Question -->
-        <UCard class="mb-8" :key="selfAssessmentStep" :ui="{ body: 'p-8' }">
-          <p class="text-xl text-gray-900 font-medium leading-relaxed mb-6">
+        <div class="glass p-8 mb-8" :key="selfAssessmentStep">
+          <p class="text-xl text-white font-medium leading-relaxed mb-6">
             {{ selfAssessmentQuestions[selfAssessmentStep].question }}
           </p>
 
@@ -305,6 +319,7 @@ const submitCompanyAssessment = () => {
             :rows="5"
             placeholder="Enter your response..."
             size="lg"
+            class="bg-white/10 border-white/20 text-white"
           />
 
           <div v-else class="grid grid-cols-5 gap-3">
@@ -314,30 +329,29 @@ const submitCompanyAssessment = () => {
               @click="selfAssessmentAnswers[selfAssessmentQuestions[selfAssessmentStep].id] = n"
               class="p-4 rounded-xl border-2 transition-all duration-200 text-center"
               :class="selfAssessmentAnswers[selfAssessmentQuestions[selfAssessmentStep].id] === n
-                ? 'border-cyan-500 bg-cyan-50 shadow-lg'
-                : 'border-gray-200 hover:border-cyan-300 hover:bg-gray-50'"
+                ? 'border-cyan-500 bg-cyan-500/20 shadow-lg glow-cyan'
+                : 'border-white/20 hover:border-cyan-400/50 hover:bg-white/5 bg-white/5'"
             >
-              <div class="text-2xl font-bold text-gray-900">{{ n }}</div>
+              <div class="text-2xl font-bold text-white">{{ n }}</div>
             </button>
           </div>
-        </UCard>
+        </div>
 
         <!-- Navigation -->
         <div class="flex items-center justify-between">
-          <UButton
-            variant="ghost"
-            color="neutral"
+          <button
             :disabled="selfAssessmentStep === 0"
             @click="selfAssessmentStep--"
+            class="px-4 py-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all disabled:opacity-30"
           >
             Previous
-          </UButton>
-          <UButton
-            class="bg-gradient-to-r from-blue-400 to-cyan-500"
+          </button>
+          <button
             @click="submitSelfAssessment"
+            class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-bold rounded-xl transition-all"
           >
             {{ selfAssessmentStep === selfAssessmentQuestions.length - 1 ? 'Submit' : 'Next' }}
-          </UButton>
+          </button>
         </div>
       </div>
 
@@ -346,33 +360,45 @@ const submitCompanyAssessment = () => {
         <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center mb-6">
           <UIcon name="i-lucide-check" class="size-10 text-white" />
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Self Assessment Complete!</h2>
-        <p class="text-gray-600 max-w-lg mx-auto mb-8">
+        <h2 class="text-2xl font-bold text-white mb-2">Self Assessment Complete!</h2>
+        <p class="text-white/70 max-w-lg mx-auto mb-8">
           Your self assessment has been submitted. Your manager will be notified.
         </p>
         <div class="flex items-center justify-center gap-4">
-          <UButton variant="outline" to="/dashboard">View Dashboard</UButton>
-          <UButton class="bg-gradient-to-r from-violet-500 to-purple-600" to="/coach">Talk to AI Coach</UButton>
+          <NuxtLink to="/dashboard" class="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl transition-all">
+            View Dashboard
+          </NuxtLink>
+          <NuxtLink to="/coach" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-bold rounded-xl transition-all">
+            Talk to AI Coach
+          </NuxtLink>
         </div>
       </div>
-    </UCard>
+    </div>
 
     <!-- Company Assessment -->
-    <UCard v-else class="bg-white/80 backdrop-blur-xl border-white/30" :ui="{ body: 'p-6' }">
+    <div v-else class="glass p-8">
       <!-- Not Started -->
       <div v-if="!companyAssessmentStarted && !companyAssessmentCompleted" class="text-center py-12">
-        <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-6">
+        <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center mb-6 glow-cyan">
           <UIcon name="i-lucide-building-2" class="size-10 text-white" />
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Company Culture Assessment</h2>
-        <p class="text-gray-600 max-w-lg mx-auto mb-8">
+        <h2 class="text-2xl font-bold text-white mb-2">Company Culture Assessment</h2>
+        <p class="text-white/70 max-w-lg mx-auto mb-8">
           Share your feedback on company culture, values, and work environment. Your responses are anonymous.
         </p>
-        <UAlert color="info" variant="subtle" icon="i-lucide-shield" class="max-w-lg mx-auto mb-6">
-          <template #title>Anonymous Survey</template>
-          <template #description>Your individual responses will not be linked to your identity.</template>
-        </UAlert>
-        <UButton size="lg" class="bg-gradient-to-r from-amber-400 to-orange-500" @click="companyAssessmentStarted = true">Start Company Assessment</UButton>
+        <div class="glass p-4 max-w-lg mx-auto mb-6 flex items-center gap-3">
+          <UIcon name="i-lucide-shield" class="size-5 text-cyan-400" />
+          <div class="text-left">
+            <p class="text-white text-sm font-medium">Anonymous Survey</p>
+            <p class="text-white/60 text-xs">Your individual responses will not be linked to your identity.</p>
+          </div>
+        </div>
+        <button
+          @click="companyAssessmentStarted = true"
+          class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_0_rgba(6,182,212,0.3)] active:scale-95"
+        >
+          Start Company Assessment
+        </button>
       </div>
 
       <!-- In Progress -->
@@ -380,17 +406,17 @@ const submitCompanyAssessment = () => {
         <!-- Progress -->
         <div class="mb-8">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-gray-700">Progress</span>
-            <span class="text-sm text-gray-500">{{ companyAssessmentStep + 1 }} / {{ companyAssessmentQuestions.length }}</span>
+            <span class="text-sm font-medium text-white/70">Progress</span>
+            <span class="text-sm text-white/50">{{ companyAssessmentStep + 1 }} / {{ companyAssessmentQuestions.length }}</span>
           </div>
-          <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-orange-500 transition-all duration-300" :style="{ width: `${((companyAssessmentStep + 1) / companyAssessmentQuestions.length) * 100}%` }" />
+          <div class="progress-bar">
+            <div class="progress-fill bg-gradient-to-r from-cyan-500 to-teal-500 transition-all duration-300" :style="{ width: `${((companyAssessmentStep + 1) / companyAssessmentQuestions.length) * 100}%` }" />
           </div>
         </div>
 
         <!-- Question -->
-        <UCard class="mb-8" :key="companyAssessmentStep" :ui="{ body: 'p-8' }">
-          <p class="text-xl text-gray-900 font-medium leading-relaxed mb-6">
+        <div class="glass p-8 mb-8" :key="companyAssessmentStep">
+          <p class="text-xl text-white font-medium leading-relaxed mb-6">
             {{ companyAssessmentQuestions[companyAssessmentStep].question }}
           </p>
 
@@ -400,10 +426,11 @@ const submitCompanyAssessment = () => {
             :rows="5"
             placeholder="Enter your response..."
             size="lg"
+            class="bg-white/10 border-white/20 text-white"
           />
 
           <div v-else>
-            <p class="text-sm text-gray-500 mb-4 text-center">{{ companyAssessmentQuestions[companyAssessmentStep].label }}</p>
+            <p class="text-sm text-white/50 mb-4 text-center">{{ companyAssessmentQuestions[companyAssessmentStep].label }}</p>
             <div class="grid grid-cols-5 gap-3">
               <button
                 v-for="n in 5"
@@ -411,31 +438,30 @@ const submitCompanyAssessment = () => {
                 @click="companyAssessmentAnswers[companyAssessmentQuestions[companyAssessmentStep].id] = n"
                 class="p-4 rounded-xl border-2 transition-all duration-200 text-center"
                 :class="companyAssessmentAnswers[companyAssessmentQuestions[companyAssessmentStep].id] === n
-                  ? 'border-orange-500 bg-orange-50 shadow-lg'
-                  : 'border-gray-200 hover:border-orange-300 hover:bg-gray-50'"
+                  ? 'border-cyan-500 bg-cyan-500/20 shadow-lg glow-cyan'
+                  : 'border-white/20 hover:border-cyan-400/50 hover:bg-white/5 bg-white/5'"
               >
-                <div class="text-2xl font-bold text-gray-900">{{ n }}</div>
+                <div class="text-2xl font-bold text-white">{{ n }}</div>
               </button>
             </div>
           </div>
-        </UCard>
+        </div>
 
         <!-- Navigation -->
         <div class="flex items-center justify-between">
-          <UButton
-            variant="ghost"
-            color="neutral"
+          <button
             :disabled="companyAssessmentStep === 0"
             @click="companyAssessmentStep--"
+            class="px-4 py-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all disabled:opacity-30"
           >
             Previous
-          </UButton>
-          <UButton
-            class="bg-gradient-to-r from-amber-400 to-orange-500"
+          </button>
+          <button
             @click="submitCompanyAssessment"
+            class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-bold rounded-xl transition-all"
           >
             {{ companyAssessmentStep === companyAssessmentQuestions.length - 1 ? 'Submit' : 'Next' }}
-          </UButton>
+          </button>
         </div>
       </div>
 
@@ -444,15 +470,19 @@ const submitCompanyAssessment = () => {
         <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center mb-6">
           <UIcon name="i-lucide-check" class="size-10 text-white" />
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Thank You!</h2>
-        <p class="text-gray-600 max-w-lg mx-auto mb-8">
+        <h2 class="text-2xl font-bold text-white mb-2">Thank You!</h2>
+        <p class="text-white/70 max-w-lg mx-auto mb-8">
           Your anonymous feedback has been submitted. This helps us improve our workplace culture.
         </p>
         <div class="flex items-center justify-center gap-4">
-          <UButton variant="outline" to="/dashboard">View Dashboard</UButton>
-          <UButton class="bg-gradient-to-r from-violet-500 to-purple-600" to="/reports">View Reports</UButton>
+          <NuxtLink to="/dashboard" class="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl transition-all">
+            View Dashboard
+          </NuxtLink>
+          <NuxtLink to="/reports" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-bold rounded-xl transition-all">
+            View Reports
+          </NuxtLink>
         </div>
       </div>
-    </UCard>
+    </div>
   </div>
 </template>

@@ -91,19 +91,17 @@ const askSuggested = (question: string) => {
     <!-- Header -->
     <div class="flex items-center justify-between mb-6">
       <div>
-        <h1 class="text-2xl font-bold text-white">AI Coach</h1>
+        <h1 class="text-4xl font-bold text-white drop-shadow-lg">AI Coach</h1>
         <p class="text-white/70 mt-1">Your personalized development assistant</p>
       </div>
-      <UBadge color="success" variant="subtle" size="lg">
-        <span class="flex items-center gap-2">
-          <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          Online
-        </span>
-      </UBadge>
+      <span class="px-4 py-2 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-sm font-medium flex items-center gap-2">
+        <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        Online
+      </span>
     </div>
 
     <!-- Chat Container -->
-    <UCard class="flex-1 flex flex-col overflow-hidden bg-white/80 backdrop-blur-xl border-white/30" :ui="{ body: 'p-0 flex-1 flex flex-col' }">
+    <div class="glass flex-1 flex flex-col overflow-hidden">
       <!-- Messages -->
       <div ref="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-6">
         <div
@@ -114,30 +112,29 @@ const askSuggested = (question: string) => {
         >
           <!-- Avatar -->
           <div class="shrink-0">
-            <UAvatar
+            <div
               v-if="message.role === 'assistant'"
-              icon="i-lucide-sparkles"
-              size="sm"
-              class="bg-gradient-to-br from-violet-500 to-purple-600"
-            />
-            <UAvatar
+              class="size-10 rounded-full bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center"
+            >
+              <UIcon name="i-lucide-sparkles" class="size-5 text-white" />
+            </div>
+            <div
               v-else
-              text="JD"
-              size="sm"
-              class="bg-gradient-to-br from-gray-400 to-gray-500"
-            />
+              class="size-10 rounded-full bg-gradient-to-br from-white/30 to-white/10 flex items-center justify-center text-white text-sm font-medium"
+            >
+              AJ
+            </div>
           </div>
 
           <!-- Message Bubble -->
           <div
             class="max-w-2xl rounded-2xl p-4"
             :class="message.role === 'user'
-              ? 'bg-gradient-to-br from-violet-500 to-purple-600 text-white'
-              : 'bg-white shadow-sm border border-gray-100'"
+              ? 'bg-gradient-to-br from-cyan-500 to-teal-500 text-white'
+              : 'bg-white/10 backdrop-blur-sm border border-white/10 text-white'"
           >
             <div
-              class="prose prose-sm"
-              :class="message.role === 'user' ? 'prose-invert' : ''"
+              class="prose prose-sm prose-invert"
               v-html="message.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')"
             ></div>
             <p class="text-xs mt-2 opacity-60" :class="message.role === 'user' ? 'text-right' : ''">
@@ -148,12 +145,14 @@ const askSuggested = (question: string) => {
 
         <!-- Typing Indicator -->
         <div v-if="isTyping" class="flex gap-4">
-          <UAvatar icon="i-lucide-sparkles" size="sm" class="bg-gradient-to-br from-violet-500 to-purple-600" />
-          <div class="bg-white shadow-sm border border-gray-100 rounded-2xl p-4">
+          <div class="size-10 rounded-full bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center">
+            <UIcon name="i-lucide-sparkles" class="size-5 text-white" />
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
             <div class="flex items-center gap-1">
-              <span class="size-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0ms"></span>
-              <span class="size-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 150ms"></span>
-              <span class="size-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 300ms"></span>
+              <span class="size-2 bg-white/60 rounded-full animate-bounce" style="animation-delay: 0ms"></span>
+              <span class="size-2 bg-white/60 rounded-full animate-bounce" style="animation-delay: 150ms"></span>
+              <span class="size-2 bg-white/60 rounded-full animate-bounce" style="animation-delay: 300ms"></span>
             </div>
           </div>
         </div>
@@ -161,47 +160,46 @@ const askSuggested = (question: string) => {
 
       <!-- Suggested Questions -->
       <div v-if="messages.length <= 1" class="px-6 pb-4">
-        <p class="text-sm text-gray-500 mb-3">Suggested questions:</p>
+        <p class="text-sm text-white/50 mb-3">Suggested questions:</p>
         <div class="flex flex-wrap gap-2">
-          <UButton
+          <button
             v-for="question in suggestedQuestions"
             :key="question"
-            variant="outline"
-            size="sm"
             @click="askSuggested(question)"
+            class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 text-sm transition-all"
           >
             {{ question }}
-          </UButton>
+          </button>
         </div>
       </div>
 
       <!-- Input Area -->
-      <div class="p-4 border-t border-gray-100">
+      <div class="p-4 border-t border-white/10">
         <form @submit.prevent="sendMessage" class="flex items-center gap-3">
-          <UInput
-            v-model="inputMessage"
-            placeholder="Ask your AI Coach anything..."
-            size="lg"
-            class="flex-1"
-            :ui="{ trailing: 'pointer-events-auto' }"
-          >
-            <template #trailing>
-              <UButton variant="ghost" icon="i-lucide-mic" size="sm" color="neutral" />
-            </template>
-          </UInput>
-          <UButton
+          <div class="flex-1 relative">
+            <input
+              v-model="inputMessage"
+              type="text"
+              placeholder="Ask your AI Coach anything..."
+              class="w-full px-4 py-3 pr-12 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+            />
+            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/50 hover:text-white transition-colors">
+              <UIcon name="i-lucide-mic" class="size-5" />
+            </button>
+          </div>
+          <button
             type="submit"
             :disabled="!inputMessage.trim() || isTyping"
-            icon="i-lucide-send"
-            class="bg-gradient-to-r from-violet-500 to-purple-600"
+            class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
+            <UIcon name="i-lucide-send" class="size-5" />
             Send
-          </UButton>
+          </button>
         </form>
-        <p class="text-xs text-gray-400 mt-2 text-center">
+        <p class="text-xs text-white/40 mt-2 text-center">
           AI Coach has access to your HEXACO results, 360 feedback, and goals to provide personalized guidance.
         </p>
       </div>
-    </UCard>
+    </div>
   </div>
 </template>

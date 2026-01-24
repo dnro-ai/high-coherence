@@ -1,34 +1,119 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-/* Clean neutral theme with subtle blue accent */
+/* Custom Fonts */
+@font-face {
+  font-family: 'PP Valve';
+  src: url('/fonts/PPValve-PlainRegular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fabriga';
+  src: url('/fonts/Fabriga-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fabriga';
+  src: url('/fonts/Fabriga-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fabriga';
+  src: url('/fonts/Fabriga-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Modern dark theme with cyan/teal accent */
 :root {
-  --color-primary-50: 239 246 255;
-  --color-primary-100: 219 234 254;
-  --color-primary-200: 191 219 254;
-  --color-primary-300: 147 197 253;
-  --color-primary-400: 96 165 250;
-  --color-primary-500: 59 130 246;
-  --color-primary-600: 37 99 235;
-  --color-primary-700: 29 78 216;
-  --color-primary-800: 30 64 175;
-  --color-primary-900: 30 58 138;
-  --color-primary-950: 23 37 84;
+  --color-primary-50: 236 254 255;
+  --color-primary-100: 207 250 254;
+  --color-primary-200: 165 243 252;
+  --color-primary-300: 103 232 249;
+  --color-primary-400: 34 211 238;
+  --color-primary-500: 6 182 212;
+  --color-primary-600: 8 145 178;
+  --color-primary-700: 14 116 144;
+  --color-primary-800: 21 94 117;
+  --color-primary-900: 22 78 99;
+  --color-primary-950: 8 51 68;
 }
 
-/* Clean light background */
+/* Body styling */
 body {
-  @apply bg-gray-50 min-h-screen;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Fabriga', sans-serif;
+  font-weight: 300;
+  background: linear-gradient(135deg, #1e3a5f 0%, #0d5a5a 50%, #0891b2 100%);
 }
 
-/* Subtle card styling */
+/* Main headings: PP Valve Regular */
+h1, h2, h3 {
+  font-family: 'PP Valve', sans-serif;
+  font-weight: 400;
+}
+
+/* Subheadings: Fabriga Medium */
+h4, h5, h6 {
+  font-family: 'Fabriga', sans-serif;
+  font-weight: 500;
+}
+
+/* Bold numbers/stats: Fabriga Black */
+.font-bold {
+  font-family: 'Fabriga', sans-serif;
+  font-weight: 900;
+}
+
+/* Glass card styling */
 .glass {
-  @apply bg-white border border-gray-200 shadow-sm rounded-xl;
+  @apply bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Glass card hover effect */
+.glass-hover {
+  @apply transition-all duration-300;
+}
+.glass-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.15);
 }
 
 /* Gradient text */
 .gradient-text {
-  @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent;
+}
+
+/* Glow effects */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+}
+
+.glow-teal {
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
+}
+
+/* Progress bar styling */
+.progress-bar {
+  @apply h-3 w-full bg-white/10 rounded-full overflow-hidden backdrop-blur-sm border border-white/10;
+}
+
+.progress-fill {
+  @apply h-full rounded-full;
+  box-shadow: 0 0 15px rgba(0, 210, 173, 0.5);
 }
 
 /* Fade in animation */
@@ -49,12 +134,33 @@ body {
 
 /* Pulse glow - subtle version */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
-  50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.4); }
+  0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(6, 182, 212, 0.5); }
 }
 
 .pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Animated blob */
+@keyframes blob-float {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.2) translate(50px, -50px);
+    opacity: 0.5;
+  }
+}
+
+.animate-blob {
+  animation: blob-float 20s ease-in-out infinite;
+}
+
+.animate-blob-delay {
+  animation: blob-float 25s ease-in-out infinite;
+  animation-delay: -5s;
 }
 
 /* Custom scrollbar */
@@ -64,9 +170,36 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 rounded;
+  @apply bg-white/5 rounded;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded hover:bg-gray-400;
+  @apply bg-white/20 rounded hover:bg-white/30;
+}
+
+/* Navigation item active state filter for SVG icons */
+.nav-icon-active {
+  filter: brightness(0) saturate(100%) invert(79%) sepia(47%) saturate(1234%) hue-rotate(127deg) brightness(101%) contrast(101%);
+}
+
+/* Metric circle styling */
+.metric-circle {
+  @apply relative rounded-full bg-white/5 backdrop-blur-sm border border-white/20 flex flex-col items-center justify-center;
+}
+
+.metric-circle-large {
+  @apply w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-teal-500/20 border-2 border-cyan-400/40;
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.3);
+}
+
+/* Stat card gradient */
+.stat-card-gradient {
+  @apply bg-gradient-to-br from-cyan-500 to-teal-500 border-white/30;
+  box-shadow: 0 8px 32px 0 rgba(6, 182, 212, 0.2);
+}
+
+/* User card styling */
+.user-card {
+  @apply p-5 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-teal-500/10 border border-cyan-400/30 backdrop-blur-xl;
+  box-shadow: 0 8px 32px 0 rgba(6, 182, 212, 0.15);
 }
