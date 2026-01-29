@@ -34,6 +34,30 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Saol Display';
+  src: url('/fonts/SaolDisplay-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Saol Display';
+  src: url('/fonts/SaolDisplay-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Saol Display';
+  src: url('/fonts/SaolDisplayRegularItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* Modern dark theme with cyan/teal accent */
 :root {
   --color-primary-50: 236 254 255;
@@ -65,12 +89,12 @@
 
 /* Light mode colors */
 .light {
-  --bg-gradient-start: #f1f2f5;
-  /* Light gray base */
-  --bg-gradient-mid: #f4f5f7;
-  /* Slightly lighter */
-  --bg-gradient-end: #eef0f3;
-  /* Subtle variation */
+  --bg-gradient-start: #d5d8dc;
+  /* Darker gray base */
+  --bg-gradient-mid: #dcdfe3;
+  /* Mid tone */
+  --bg-gradient-end: #d0d3d8;
+  /* Subtle darker variation */
   --text-primary: 15 23 42;
   --text-secondary: 15 23 42 / 0.7;
   --text-muted: 15 23 42 / 0.5;
@@ -349,4 +373,47 @@ h6 {
 
 .light .hover\:bg-white\/10:hover {
   background: rgb(255 255 255 / 0.6) !important;
+}
+
+/* Modal form elements in light mode */
+.light .bg-white\/95 input,
+.light .bg-white\/95 textarea,
+.light .bg-white\/95 select {
+  background: rgb(0 0 0 / 0.05) !important;
+  border-color: rgb(0 0 0 / 0.15) !important;
+  color: rgb(15 23 42) !important;
+}
+
+.light .bg-white\/95 input::placeholder,
+.light .bg-white\/95 textarea::placeholder {
+  color: rgb(15 23 42 / 0.4) !important;
+}
+
+.light .bg-white\/95 .text-white {
+  color: rgb(15 23 42) !important;
+}
+
+.light .bg-white\/95 .text-white\/50,
+.light .bg-white\/95 .text-white\/40,
+.light .bg-white\/95 .text-white\/30 {
+  color: rgb(15 23 42 / 0.5) !important;
+}
+
+.light .bg-white\/95 .text-white\/70,
+.light .bg-white\/95 .text-white\/80 {
+  color: rgb(15 23 42 / 0.7) !important;
+}
+
+.light .bg-white\/95 .bg-white\/5,
+.light .bg-white\/95 .bg-white\/10 {
+  background: rgb(0 0 0 / 0.05) !important;
+}
+
+.light .bg-white\/95 .border-white\/10,
+.light .bg-white\/95 .border-white\/20 {
+  border-color: rgb(0 0 0 / 0.1) !important;
+}
+
+.light .bg-white\/95 .hover\:bg-white\/10:hover {
+  background: rgb(0 0 0 / 0.08) !important;
 }

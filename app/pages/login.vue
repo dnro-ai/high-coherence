@@ -20,9 +20,9 @@ const handleLogin = async () => {
     <!-- Logo -->
     <div class="text-center mb-8">
       <img
-        src="/high-coherence-logo.png"
+        src="/HighCoherence_logo.svg"
         alt="High Coherence"
-        class="h-16 mx-auto mb-4"
+        class="h-12 mx-auto mb-4"
       />
       <p class="text-white/70 mt-1">Employee Development Platform</p>
     </div>

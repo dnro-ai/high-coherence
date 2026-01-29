@@ -10,6 +10,10 @@ const emit = defineEmits<{
   'submit': [moods: string[], cats: { c: number; a: number; t: number }[]]
 }>()
 
+// Theme detection
+const colorMode = useColorMode()
+const isDark = computed(() => colorMode.value === 'dark')
+
 const selectedMoods = ref<string[]>([])
 
 const quadrantConfig = {
@@ -100,18 +104,33 @@ const selectionText = computed(() => {
     }"
   >
     <template #content>
-      <div class="bg-gradient-to-br from-slate-900 to-slate-800 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+      <div 
+        :class="[
+          'backdrop-blur-xl rounded-2xl border shadow-2xl overflow-hidden',
+          isDark 
+            ? 'bg-gradient-to-br from-slate-900 to-slate-800 border-white/10' 
+            : 'bg-white/95 border-slate-200'
+        ]"
+      >
         <!-- Header -->
-        <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
+        <div 
+          :class="[
+            'flex items-center justify-between px-6 py-4 border-b',
+            isDark ? 'border-white/10' : 'border-slate-200'
+          ]"
+        >
           <div>
-            <h2 class="text-xl font-bold text-white">Pulse Check</h2>
-            <p class="text-sm text-white/60 mt-1">
+            <h2 :class="['text-xl font-bold', isDark ? 'text-white' : 'text-slate-900']">Pulse Check</h2>
+            <p :class="['text-sm mt-1', isDark ? 'text-white/60' : 'text-slate-500']">
               Select up to 2 moods that describe how you're feeling. Tap again to deselect.
             </p>
           </div>
           <button
             @click="closeModal"
-            class="p-2 rounded-xl hover:bg-white/10 text-white/60 hover:text-white transition-colors"
+            :class="[
+              'p-2 rounded-xl transition-colors',
+              isDark ? 'hover:bg-white/10 text-white/60 hover:text-white' : 'hover:bg-slate-100 text-slate-400 hover:text-slate-600'
+            ]"
           >
             <UIcon name="i-lucide-x" class="size-5" />
           </button>
@@ -134,7 +153,7 @@ const selectionText = computed(() => {
                   'px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200',
                   isSelected(mood)
                     ? `${quadrantConfig.highNegative.selectedBg} text-gray-900 scale-105 shadow-lg`
-                    : `bg-white/10 text-white/80 ${quadrantConfig.highNegative.hoverBg} hover:text-white`
+                    : isDark ? `bg-white/10 text-white/80 ${quadrantConfig.highNegative.hoverBg} hover:text-white` : `bg-slate-100 text-slate-600 ${quadrantConfig.highNegative.hoverBg} hover:text-slate-900`
                 ]"
               >
                 {{ mood }}
@@ -157,7 +176,7 @@ const selectionText = computed(() => {
                   'px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200',
                   isSelected(mood)
                     ? `${quadrantConfig.highPositive.selectedBg} text-gray-900 scale-105 shadow-lg`
-                    : `bg-white/10 text-white/80 ${quadrantConfig.highPositive.hoverBg} hover:text-white`
+                    : isDark ? `bg-white/10 text-white/80 ${quadrantConfig.highPositive.hoverBg} hover:text-white` : `bg-slate-100 text-slate-600 ${quadrantConfig.highPositive.hoverBg} hover:text-slate-900`
                 ]"
               >
                 {{ mood }}
@@ -180,7 +199,7 @@ const selectionText = computed(() => {
                   'px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200',
                   isSelected(mood)
                     ? `${quadrantConfig.lowNegative.selectedBg} text-gray-900 scale-105 shadow-lg`
-                    : `bg-white/10 text-white/80 ${quadrantConfig.lowNegative.hoverBg} hover:text-white`
+                    : isDark ? `bg-white/10 text-white/80 ${quadrantConfig.lowNegative.hoverBg} hover:text-white` : `bg-slate-100 text-slate-600 ${quadrantConfig.lowNegative.hoverBg} hover:text-slate-900`
                 ]"
               >
                 {{ mood }}
@@ -203,7 +222,7 @@ const selectionText = computed(() => {
                   'px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200',
                   isSelected(mood)
                     ? `${quadrantConfig.lowPositive.selectedBg} text-gray-900 scale-105 shadow-lg`
-                    : `bg-white/10 text-white/80 ${quadrantConfig.lowPositive.hoverBg} hover:text-white`
+                    : isDark ? `bg-white/10 text-white/80 ${quadrantConfig.lowPositive.hoverBg} hover:text-white` : `bg-slate-100 text-slate-600 ${quadrantConfig.lowPositive.hoverBg} hover:text-slate-900`
                 ]"
               >
                 {{ mood }}
@@ -214,11 +233,11 @@ const selectionText = computed(() => {
 
         <!-- Footer -->
         <div class="px-6 py-4 flex items-center justify-between">
-          <span class="text-sm text-white/50">{{ selectionText }}</span>
+          <span :class="['text-sm', isDark ? 'text-white/50' : 'text-slate-500']">{{ selectionText }}</span>
           <div class="flex items-center gap-3">
             <button
               @click="closeModal"
-              class="px-4 py-2 text-sm text-white/60 hover:text-white transition-colors"
+              :class="['px-4 py-2 text-sm transition-colors', isDark ? 'text-white/60 hover:text-white' : 'text-slate-500 hover:text-slate-900']"
             >
               Cancel
             </button>
@@ -229,7 +248,7 @@ const selectionText = computed(() => {
                 'px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300',
                 selectedMoods.length > 0
                   ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-lg hover:shadow-cyan-500/25 active:scale-95'
-                  : 'bg-white/10 text-white/30 cursor-not-allowed'
+                  : isDark ? 'bg-white/10 text-white/30 cursor-not-allowed' : 'bg-slate-100 text-slate-400 cursor-not-allowed'
               ]"
             >
               Submit

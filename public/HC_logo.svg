@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 109.5 40.5">
+  <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 136)  -->
+  <defs>
+    <style>
+      .st0 {
+        font-family: SaolDisplay-Medium, 'Saol Display';
+        font-size: 30.79px;
+        font-weight: 500;
+      }
+
+      .st0, .st1 {
+        fill: #fff;
+      }
+
+      .st1 {
+        font-family: PPValve-StencilExtralight, 'PP Valve';
+        font-size: 17.84px;
+        font-weight: 200;
+      }
+    </style>
+  </defs>
+  <g id="SquaresLogo_xA0_Image">
+    <image id="SquaresLogo_xA0_Image1" data-name="SquaresLogo_xA0_Image" width="44" height="44" transform="translate(.5) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAACXBIWXMAABYlAAAWJQFJUiTwAAADF0lEQVRYhe3ZPYhcVRTA8d/ZjSQxfkVR0MIiip2CaGEjGEURFN1CBNFGIa02FqaxEgJpRMFCsBARVARBsLIQsRTEiCYiQkJQxI/Ej5isqzszx+LO7G42b2bvvJnZTSB/GNj39t53/ve+M/drIjPThcGJiLh2W//iJ3yJSzC3dU7ncBq3YQ9+BVl4YyutRpGZ+/uO37Lam7GFThtx1hsfpMT84EZmPo37sGMTpQYEOjiBgxFx3Koj6y/6PIH78T3S5ub0f7gRl+FdHF9foEl4Hl/gLkV48Jk18+jiKbxlSEc1CQf+iYjO7Nwa6UBmnhpVqEk4197PzMfxoPKapt3TgR5+wCsR8SN2jqpQk5/78CjOKK+sN8XPIq7B87ilpoVNPdzUqLcj4rmaB45LZt6Az5VJq0pmI3rWDHsz4FIlNarSraaHWdOwzFzAw9heG2QdgV9wICJOjuHAuIX77FN6/ENcPmbdjtL4F/ARPh03eBvhRbwTER+0qAsy827lDY1NG+EeruwH3ol7sMvo9cgcDkfEN/3r7cqIMzZthFmVW8Cz+Nho4evwJB5pGW+FtsIDduPNiHh9o4KZ+dqEsTD5wmZZkR5Jf6ydytB4Pu0uqrgoPGsuCs+aaQj3Ksq0miSamHQc3oGrIDOHTbVdZfF/xYSxMLnwV1jIzFcNXxv0cLWyQpuYtsLLEBGfZeYDyqptWGoEehHx95p7PS3PQtoIz1uT+xHRxZ9jPmPOJgovYX9mPmSDDWMDPUX2TpxsEbuV8Iu4Vfki1YwQTbyMr9tUrN2ELg0uIuIojrYJNoRTylarKkVqhAPXZ+buyvLj0MVNxkitGoGf8RjuULbi0zzpXFZGmF34q6ZCjfBLeF/phVmc/HTxOw7XVGgSnsO/K0+MOIIj07Cr5I9B6KZ/Djtbuzkz99r849aOcjY98DiHJuHfsBefzEiqlqWmm03CB/Ce2R5PDWNwmnkG3zUVGAifXqkRcQiHZq5Wz1nT/kD49sx8Rmnh+fQDTRf39v9OiAvoh8VjEbFnm9Lli7YmZ2voKhPWsa0WacX/Ba/XGPg60vIAAAAASUVORK5CYII="/>
+  </g>
+  <g id="HIGH">
+    <text class="st0" transform="translate(29.1 22.23)"><tspan x="0" y="0">HIGH</tspan></text>
+  </g>
+  <g id="COHERENCE">
+    <text class="st1" transform="translate(-.53 38.53)"><tspan x="0" y="0">COHERENCE</tspan></text>
+  </g>
+</svg>

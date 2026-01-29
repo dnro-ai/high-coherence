@@ -1,5 +1,28 @@
 # Changelog
 
+## 2026-01-29 - Logo Updates & Modal Light Mode
+
+### Logo & Branding
+- **New Logo:** Replaced with `HighCoherence_logo.svg` in sidebar and login
+- **Collapsed State:** Added `HC_Squares_logomark.svg` when sidebar is collapsed
+- **Alignment:** Logo now left-aligned with navigation icons, sized to 63%
+
+### Typography
+- **Dashboard Greeting:** Changed "Good Morning, Alex" to Saol Display Semibold font
+- **Header Icons:** Reduced stroke width to 1.5pt for thinner appearance
+
+### Light Mode Enhancements
+- **Background:** Increased contrast with darker gray gradient (`#d5d8dc` range)
+- **Modals (GoalDetailModal, NewGoalModal, PulseCheck):**
+  - Now fully theme-aware with white backgrounds in light mode
+  - Updated text, inputs, buttons, and mood pills for proper contrast
+  - Added scrolling support with `max-h-[85vh] overflow-y-auto`
+
+### Fonts
+- Added Saol Display font family (Semibold, Medium, Regular Italic)
+
+---
+
 ## 2026-01-28 - Light Mode Refinements
 
 ### Visual Updates

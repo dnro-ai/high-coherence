@@ -60,7 +60,7 @@ const stats = {
     <!-- Header -->
     <header class="flex items-center justify-between mb-10">
       <div>
-        <h1 class="text-4xl font-bold text-white mb-1 drop-shadow-lg">Good Morning, {{ userProfile.name.split(' ')[0] }}</h1>
+        <h1 class="text-4xl font-semibold text-white mb-1 drop-shadow-lg" style="font-family: 'Saol Display', serif;">Good Morning, {{ userProfile.name.split(' ')[0] }}</h1>
         <p class="text-white/70 text-sm">Track your progress and insights</p>
       </div>
       <div class="flex items-center gap-3">

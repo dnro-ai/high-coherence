@@ -4,6 +4,10 @@ const emit = defineEmits<{
   (e: 'create', goal: any): void
 }>()
 
+// Theme detection
+const colorMode = useColorMode()
+const isDark = computed(() => colorMode.value === 'dark')
+
 // Form state
 const goalType = ref<'corporate' | 'personal' | 'advancement'>('corporate')
 const title = ref('')
@@ -89,11 +93,18 @@ const selectedPillar = ref('clarity')
     v-model:open="open"
     :ui="{
       overlay: 'backdrop-blur-md bg-black/50',
-      content: 'bg-transparent ring-0 shadow-none max-w-2xl w-full'
+      content: 'bg-transparent ring-0 shadow-none max-w-2xl w-full max-h-[90vh]'
     }"
   >
     <template #content>
-      <div class="bg-gradient-to-br from-slate-900/95 to-slate-800/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-6">
+      <div 
+        :class="[
+          'backdrop-blur-xl border rounded-2xl shadow-2xl p-6 max-h-[85vh] overflow-y-auto',
+          isDark 
+            ? 'bg-gradient-to-br from-slate-900/95 to-slate-800/95 border-white/20' 
+            : 'bg-white/95 border-slate-200'
+        ]"
+      >
       <!-- Header -->
       <div class="flex items-start justify-between mb-6">
         <div>

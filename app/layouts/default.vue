@@ -57,19 +57,19 @@ const userMenu = [[
       style="backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1);"
     >
       <!-- Header with Logo -->
-      <div :class="collapsed ? 'p-4' : 'p-6'" class="flex items-center justify-center">
+      <div :class="collapsed ? 'p-4 justify-center' : 'px-8 py-6 justify-start'" class="flex items-center">
         <img
           v-if="!collapsed"
-          src="/high-coherence-logo.png"
+          src="/HighCoherence_logo.svg"
           alt="High Coherence"
-          :class="['w-[70%] h-auto', !isDark && 'brightness-0']"
+          :class="['w-[63%] h-auto', !isDark && 'brightness-0']"
         />
-        <div
+        <img
           v-else
-          :class="['w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold', isDark ? 'bg-cyan-500/20 text-cyan-400' : 'bg-cyan-500/10 text-cyan-600']"
-        >
-          C
-        </div>
+          src="/HC_Squares_logomark.svg"
+          alt="High Coherence"
+          :class="['w-8 h-8', !isDark && 'brightness-0']"
+        />
       </div>
 
       <!-- Navigation -->
@@ -150,9 +150,9 @@ const userMenu = [[
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 pt-6 px-8 pb-8 lg:pt-8 lg:px-12 lg:pb-12 overflow-y-auto relative z-10">
+    <main class="flex-1 px-8 pb-8 lg:px-12 lg:pb-12 overflow-y-auto relative z-10">
       <!-- Top Icons Bar -->
-      <div class="flex items-center gap-2 mb-4">
+      <div class="flex items-center gap-2 mb-4 pt-6 lg:pt-8">
         <button
           @click="collapsed = !collapsed"
           :class="[
@@ -161,7 +161,7 @@ const userMenu = [[
           ]"
           :title="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
         >
-          <UIcon name="i-lucide-panel-left-close" class="size-5" />
+          <UIcon name="i-lucide-panel-left-close" class="size-5 [&>*]:stroke-[1.5]" />
         </button>
         <button
           @click="toggleTheme"
@@ -173,7 +173,7 @@ const userMenu = [[
         >
           <UIcon
             :name="isDark ? 'i-lucide-sun' : 'i-lucide-moon'"
-            class="size-5"
+            class="size-5 [&>*]:stroke-[1.5]"
           />
         </button>
       </div>
