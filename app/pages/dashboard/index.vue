@@ -27,12 +27,12 @@ function handleMoodSubmit(moods: string[], cats: { c: number; a: number; t: numb
 }
 
 const hexacoScores = [
-  { trait: 'Honesty-Humility', score: 89, color: '#00d2ad' },
-  { trait: 'Emotionality', score: 75, color: '#2cd3ff' },
-  { trait: 'Extraversion', score: 71, color: '#00d2ad' },
-  { trait: 'Agreeableness', score: 85, color: '#2cd3ff' },
-  { trait: 'Conscientiousness', score: 88, color: '#00d2ad' },
-  { trait: 'Openness', score: 74, color: '#2cd3ff' }
+  { trait: 'Honesty-Humility', score: 89, color: '#0c886f' }, // H - Teal
+  { trait: 'Emotionality', score: 75, color: '#ff8a4a' },     // E - Orange
+  { trait: 'Extraversion', score: 71, color: '#041d2a' },     // X - Navy
+  { trait: 'Agreeableness', score: 85, color: '#ffa93f' },    // A - Amber
+  { trait: 'Conscientiousness', score: 88, color: '#345d76' },// C - Blue-gray
+  { trait: 'Openness', score: 74, color: '#5be8ff' }          // O - Cyan
 ]
 
 const recentActivities = [
@@ -60,16 +60,16 @@ const stats = {
     <!-- Header -->
     <header class="flex items-center justify-between mb-10">
       <div>
-        <h1 class="text-4xl font-semibold text-white mb-1 drop-shadow-lg" style="font-family: 'Saol Display', serif;">Good Morning, {{ userProfile.name.split(' ')[0] }}</h1>
+        <h1 class="text-4xl font-semibold text-white mb-1 dark:drop-shadow-lg" style="font-family: 'Saol Display', serif;">Good Morning, {{ userProfile.name.split(' ')[0] }}</h1>
         <p class="text-white/70 text-sm">Track your progress and insights</p>
       </div>
       <div class="flex items-center gap-3">
         <UButton
           @click="openPulseCheck"
           size="lg"
-          class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-semibold rounded-full flex items-center gap-2 shadow-lg shadow-cyan-500/25 transition-all duration-300 active:scale-95"
+          class="px-6 py-3 bg-[#5be8ff] hover:bg-[#5be8ff]/80 text-[#041d2a] dark:bg-[#041d2a] dark:hover:bg-[#041d2a]/80 dark:text-white font-semibold rounded-full flex items-center gap-2 shadow-lg shadow-cyan-500/10 border border-white/10 transition-all duration-300 active:scale-95"
         >
-          <UIcon name="i-lucide-zap" class="size-5" />
+          <UIcon name="i-lucide-zap" class="size-5 text-[#041d2a] dark:text-white" />
           Pulse Check
         </UButton>
         <UButton
@@ -155,7 +155,7 @@ const stats = {
             <h3 class="text-3xl font-bold text-white mb-2">{{ stats.reviewsCompleted.value }}</h3>
             <div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
               <div
-                class="h-full bg-gradient-to-r from-cyan-500 to-teal-500 rounded-full transition-all duration-1000"
+                class="h-full bg-gradient-to-r from-hexaco-h to-hexaco-o rounded-full transition-all duration-1000"
                 :style="{ width: `${stats.reviewsCompleted.progress}%` }"
               />
             </div>
@@ -166,7 +166,7 @@ const stats = {
             <h3 class="text-3xl font-bold text-white mb-2">{{ stats.goalsProgress.value }}</h3>
             <div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
               <div
-                class="h-full bg-gradient-to-r from-cyan-500 to-teal-500 rounded-full transition-all duration-1000"
+                class="h-full bg-gradient-to-r from-hexaco-h to-hexaco-o rounded-full transition-all duration-1000"
                 :style="{ width: `${stats.goalsProgress.progress}%` }"
               />
             </div>
@@ -228,7 +228,7 @@ const stats = {
             class="flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition-all duration-300 group cursor-pointer border border-transparent hover:border-white/10"
           >
             <div class="flex items-center gap-4">
-              <div class="p-2.5 rounded-xl bg-white/5 backdrop-blur-sm text-cyan-400 border border-white/10">
+              <div class="p-2.5 rounded-xl bg-white/5 backdrop-blur-sm text-hexaco-o border border-white/10">
                 <UIcon :name="activity.icon" class="size-4" />
               </div>
               <div>
@@ -236,7 +236,7 @@ const stats = {
                 <p class="text-xs text-white/50 mt-0.5">{{ activity.time }}</p>
               </div>
             </div>
-            <UIcon name="i-lucide-chevron-right" class="size-5 text-white/30 group-hover:text-cyan-400 transition-colors" />
+            <UIcon name="i-lucide-chevron-right" class="size-5 text-white/30 group-hover:text-hexaco-o transition-colors" />
           </div>
         </div>
       </section>

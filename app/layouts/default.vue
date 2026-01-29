@@ -97,7 +97,7 @@ const userMenu = [[
             :class="[
               'size-6 transition-all duration-300',
               isActive(item.to) 
-                ? 'text-cyan-500' 
+                ? isDark ? 'text-cyan-500' : 'text-[#0891b2]'
                 : isDark ? 'opacity-60 group-hover:opacity-90' : 'opacity-50 group-hover:opacity-80'
             ]"
           />
@@ -108,7 +108,7 @@ const userMenu = [[
             :class="[
               'w-6 h-6 transition-all duration-300',
               isDark ? 'brightness-0 invert' : 'brightness-0',
-              isActive(item.to) ? 'nav-icon-active' : 'opacity-60 group-hover:opacity-90'
+              isActive(item.to) ? (isDark ? 'nav-icon-active' : 'nav-icon-active-light') : 'opacity-60 group-hover:opacity-90'
             ]"
           />
           <span v-if="!collapsed" class="text-sm font-medium">{{ item.label }}</span>
@@ -133,7 +133,7 @@ const userMenu = [[
               'w-full py-2.5 font-bold rounded-xl text-xs transition-all duration-300 active:scale-95',
               isDark 
                 ? 'bg-white/90 hover:bg-white text-teal-900 shadow-[0_4px_16px_0_rgba(255,255,255,0.2)] hover:shadow-[0_6px_20px_0_rgba(255,255,255,0.3)]'
-                : 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-lg hover:shadow-xl'
+                : 'bg-[#5be8ff] text-[#041d2a] shadow-lg hover:shadow-xl'
             ]">
               Manage Account
             </button>

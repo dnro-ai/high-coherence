@@ -65,7 +65,7 @@ function handleMoodClick(mood: string) {
 
 function handleSubmit() {
   if (selectedMoods.value.length === 0) return
-  const cats = selectedMoods.value.map(mood => MOOD_CAT_MAP[mood]).filter(Boolean)
+  const cats = selectedMoods.value.map(mood => MOOD_CAT_MAP[mood]).filter((cat): cat is { c: number; a: number; t: number } => !!cat)
   emit('submit', selectedMoods.value, cats)
   selectedMoods.value = []
   emit('update:modelValue', false)
@@ -108,7 +108,7 @@ const selectionText = computed(() => {
         :class="[
           'backdrop-blur-xl rounded-2xl border shadow-2xl overflow-hidden',
           isDark 
-            ? 'bg-gradient-to-br from-slate-900 to-slate-800 border-white/10' 
+            ? 'bg-[#041d2a] border-white/10' 
             : 'bg-white/95 border-slate-200'
         ]"
       >
@@ -247,7 +247,7 @@ const selectionText = computed(() => {
               :class="[
                 'px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300',
                 selectedMoods.length > 0
-                  ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-lg hover:shadow-cyan-500/25 active:scale-95'
+                  ? 'bg-[#5be8ff] hover:bg-[#5be8ff]/80 text-[#041d2a] dark:bg-[#041d2a] dark:hover:bg-[#041d2a]/80 dark:text-white shadow-lg hover:shadow-cyan-500/25 active:scale-95'
                   : isDark ? 'bg-white/10 text-white/30 cursor-not-allowed' : 'bg-slate-100 text-slate-400 cursor-not-allowed'
               ]"
             >

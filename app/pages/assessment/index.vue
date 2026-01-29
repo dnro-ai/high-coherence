@@ -546,7 +546,7 @@ const overallQuestionNumber = computed(() => {
   <div class="space-y-6">
     <!-- Header -->
     <div>
-      <h1 class="text-4xl font-bold text-white drop-shadow-lg">CRATE COHERE Assessment</h1>
+      <h1 class="text-4xl font-semibold text-white dark:drop-shadow-lg" style="font-family: 'Saol Display', serif;">CRATE COHERE Assessment</h1>
       <p class="text-white/70 mt-1">48 Questions | ~15 minutes</p>
     </div>
 
@@ -554,8 +554,8 @@ const overallQuestionNumber = computed(() => {
     <div class="glass p-8">
       <!-- Not Started State -->
       <div v-if="!isStarted && !isCompleted" class="text-center py-12 max-w-2xl mx-auto">
-        <div class="size-20 mx-auto rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center mb-6 glow-cyan">
-          <UIcon name="i-lucide-brain" class="size-10 text-white" />
+        <div class="size-20 mx-auto rounded-2xl bg-[#5be8ff] dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 flex items-center justify-center mb-6 glow-cyan">
+          <UIcon name="i-lucide-brain" class="size-10 text-[#041d2a] dark:text-white" />
         </div>
         <h2 class="text-2xl font-bold text-white mb-4">Initial Assessment Questionnaire</h2>
         <p class="text-white/70 mb-6">
@@ -581,7 +581,7 @@ const overallQuestionNumber = computed(() => {
 
         <button
           @click="isStarted = true"
-          class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_0_rgba(6,182,212,0.3)] active:scale-95"
+          class="px-8 py-3 bg-[#5be8ff] hover:bg-[#5be8ff]/80 text-[#041d2a] dark:bg-gradient-to-r dark:from-cyan-500 dark:to-teal-500 hover:dark:from-cyan-400 hover:dark:to-teal-400 dark:text-white font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_0_rgba(6,182,212,0.3)] active:scale-95"
         >
           Begin Assessment
         </button>

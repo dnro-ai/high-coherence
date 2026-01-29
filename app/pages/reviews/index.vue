@@ -141,7 +141,7 @@ const stats = [
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-4xl font-bold text-white drop-shadow-lg">360 Reviews</h1>
+        <h1 class="text-4xl font-semibold text-white dark:drop-shadow-lg" style="font-family: 'Saol Display', serif;">360 Reviews</h1>
         <p class="text-white/70 mt-1">Manage anonymous feedback and view aggregated results</p>
       </div>
     </div>
@@ -298,7 +298,7 @@ const stats = [
     <!-- Send Invite Modal -->
     <UModal v-model:open="showInviteModal">
       <template #content>
-        <div class="p-6 max-h-[85vh] overflow-y-auto bg-gradient-to-br from-blue-900/95 via-teal-800/95 to-cyan-700/95 backdrop-blur-xl rounded-2xl border border-white/20">
+        <div class="p-6 max-h-[85vh] overflow-y-auto bg-[#041d2a] backdrop-blur-xl rounded-2xl border border-white/20">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl font-semibold text-white">Send Review Invites</h2>
             <button @click="showInviteModal = false" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
@@ -367,7 +367,7 @@ const stats = [
     <!-- Detailed Results Modal -->
     <UModal v-model:open="showResultsModal" :ui="{ width: 'max-w-3xl' }">
       <template #content>
-        <div class="p-6 max-h-[85vh] overflow-y-auto bg-gradient-to-br from-blue-900/95 via-teal-800/95 to-cyan-700/95 backdrop-blur-xl rounded-2xl border border-white/20">
+        <div class="p-6 max-h-[85vh] overflow-y-auto bg-[#041d2a] backdrop-blur-xl rounded-2xl border border-white/20">
           <div class="flex items-center justify-between mb-6">
             <div>
               <h2 class="text-xl font-semibold text-white">Review Results</h2>

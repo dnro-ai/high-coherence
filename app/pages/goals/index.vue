@@ -145,7 +145,7 @@ const getProgressColor = (status: GoalStatus) => {
     <!-- Header -->
     <header class="flex items-center justify-between mb-10">
       <div>
-        <h1 class="text-4xl font-bold text-white mb-1 drop-shadow-lg">Goals</h1>
+        <h1 class="text-4xl font-semibold text-white mb-1 dark:drop-shadow-lg" style="font-family: 'Saol Display', serif;">Goals</h1>
         <p class="text-white/70 text-sm">Track your objectives and key results</p>
       </div>
       <UButton

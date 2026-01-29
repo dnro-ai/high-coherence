@@ -80,7 +80,7 @@ const downloadReport = (report: typeof recentReports[0]) => {
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-4xl font-bold text-white drop-shadow-lg">Reports & Analytics</h1>
+        <h1 class="text-4xl font-semibold text-white dark:drop-shadow-lg" style="font-family: 'Saol Display', serif;">Reports & Analytics</h1>
         <p class="text-white/70 mt-1">Company-wide performance insights and summaries</p>
       </div>
       <div class="flex items-center gap-3">

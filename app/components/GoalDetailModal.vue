@@ -122,7 +122,7 @@ const getStatusColor = (status: string) => {
         :class="[
           'backdrop-blur-xl border rounded-2xl shadow-2xl p-6 max-h-[85vh] overflow-y-auto',
           isDark 
-            ? 'bg-gradient-to-br from-slate-900/95 to-slate-800/95 border-white/20' 
+            ? 'bg-[#041d2a] border-white/20' 
             : 'bg-white/95 border-slate-200'
         ]"
       >

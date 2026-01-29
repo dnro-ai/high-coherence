@@ -58,24 +58,41 @@
   font-display: swap;
 }
 
-/* Modern dark theme with cyan/teal accent */
+/* Modern theme with teal/emerald primary and orange accents */
 :root {
-  --color-primary-50: 236 254 255;
-  --color-primary-100: 207 250 254;
-  --color-primary-200: 165 243 252;
-  --color-primary-300: 103 232 249;
-  --color-primary-400: 34 211 238;
-  --color-primary-500: 6 182 212;
-  --color-primary-600: 8 145 178;
-  --color-primary-700: 14 116 144;
-  --color-primary-800: 21 94 117;
-  --color-primary-900: 22 78 99;
-  --color-primary-950: 8 51 68;
+  /* Primary: Teal/Emerald scale based on #0c886f */
+  --color-primary-50: 236 253 250;
+  --color-primary-100: 204 251 241;
+  --color-primary-200: 153 246 228;
+  --color-primary-300: 91 232 255;
+  /* #5be8ff - bright cyan accent */
+  --color-primary-400: 45 212 191;
+  --color-primary-500: 12 136 111;
+  /* #0c886f - main teal */
+  --color-primary-600: 13 148 136;
+  --color-primary-700: 15 118 110;
+  --color-primary-800: 17 94 89;
+  --color-primary-900: 52 93 118;
+  /* #345d76 - deep blue-gray */
+  --color-primary-950: 4 29 42;
+  /* #041d2a - dark navy */
+
+  /* Accent colors */
+  --color-accent-orange: 255 138 74;
+  /* #ff8a4a */
+  --color-accent-amber: 255 169 63;
+  /* #ffa93f */
+  --color-accent-cream: 255 251 239;
+  /* #fffbef */
+  --color-accent-cyan: 91 232 255;
+  /* #5be8ff */
 
   /* Dark mode colors (default) */
-  --bg-gradient-start: #1e3a5f;
-  --bg-gradient-mid: #0d5a5a;
-  --bg-gradient-end: #0891b2;
+  --bg-gradient-start: #041d2a;
+  --bg-gradient-mid: #164e63;
+  /* Dark Cyan/Navy blend */
+  --bg-gradient-end: #0e7490;
+  /* Darker Cyan to prevent washing out text, using #5be8ff as influence */
   --text-primary: 255 255 255;
   --text-secondary: 255 255 255 / 0.7;
   --text-muted: 255 255 255 / 0.5;
@@ -89,12 +106,12 @@
 
 /* Light mode colors */
 .light {
-  --bg-gradient-start: #d5d8dc;
-  /* Darker gray base */
-  --bg-gradient-mid: #dcdfe3;
-  /* Mid tone */
-  --bg-gradient-end: #d0d3d8;
-  /* Subtle darker variation */
+  --bg-gradient-start: #fffbef;
+  /* Warm sunlit base */
+  --bg-gradient-mid: #f6f1e8;
+  /* Soft cream */
+  --bg-gradient-end: #efe3ce;
+  /* Warm beige */
   --text-primary: 15 23 42;
   --text-secondary: 15 23 42 / 0.7;
   --text-muted: 15 23 42 / 0.5;
@@ -159,18 +176,26 @@ h6 {
   box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.15);
 }
 
-/* Gradient text */
+/* Gradient text - teal to cyan */
 .gradient-text {
-  @apply bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent;
 }
 
-/* Glow effects */
+/* Glow effects - updated for new palette */
 .glow-cyan {
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+  box-shadow: 0 0 20px rgba(91, 232, 255, 0.3);
 }
 
 .glow-teal {
-  box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
+  box-shadow: 0 0 20px rgba(12, 136, 111, 0.3);
+}
+
+.glow-orange {
+  box-shadow: 0 0 20px rgba(255, 138, 74, 0.3);
+}
+
+.glow-amber {
+  box-shadow: 0 0 20px rgba(255, 169, 63, 0.3);
 }
 
 /* Progress bar styling */
@@ -200,21 +225,38 @@ h6 {
   animation: fade-in-up 0.5s ease-out;
 }
 
-/* Pulse glow - subtle version */
+/* Pulse glow - subtle version with new teal */
 @keyframes pulse-glow {
 
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+    box-shadow: 0 0 20px rgba(12, 136, 111, 0.3);
   }
 
   50% {
-    box-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
+    box-shadow: 0 0 40px rgba(12, 136, 111, 0.5);
   }
 }
 
 .pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Orange pulse for highlights */
+@keyframes pulse-glow-orange {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 138, 74, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(255, 138, 74, 0.5);
+  }
+}
+
+.pulse-glow-orange {
+  animation: pulse-glow-orange 2s ease-in-out infinite;
 }
 
 /* Animated blob */
@@ -264,6 +306,10 @@ h6 {
 /* Navigation item active state filter for SVG icons */
 .nav-icon-active {
   filter: brightness(0) saturate(100%) invert(79%) sepia(47%) saturate(1234%) hue-rotate(127deg) brightness(101%) contrast(101%);
+}
+
+.nav-icon-active-light {
+  filter: brightness(0) saturate(100%) invert(48%) sepia(68%) saturate(1450%) hue-rotate(157deg) brightness(92%) contrast(101%);
 }
 
 /* Metric circle styling */
