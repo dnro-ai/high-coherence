@@ -13,6 +13,7 @@ const navigation: NavigationMenuItem[][] = [[
 
 const navItems = [
   { label: 'Dashboard', icon: '/dashboard-icon.svg', to: '/dashboard' },
+  { label: 'Goals', icon: 'i-lucide-target', to: '/goals', isLucide: true },
   { label: 'Assessments', icon: '/assessments-icon.svg', to: '/assessment' },
   { label: '360 Reviews', icon: '/360-reviews-icon.svg', to: '/reviews' },
   { label: 'Reports', icon: '/reports-icon.svg', to: '/reports' },
@@ -83,7 +84,16 @@ const userMenu = [[
           ]"
           :title="collapsed ? item.label : undefined"
         >
+          <UIcon
+            v-if="item.isLucide"
+            :name="item.icon"
+            :class="[
+              'size-6 transition-all duration-300',
+              isActive(item.to) ? 'text-cyan-400' : 'opacity-60 group-hover:opacity-90'
+            ]"
+          />
           <img
+            v-else
             :src="item.icon"
             :alt="item.label"
             :class="[

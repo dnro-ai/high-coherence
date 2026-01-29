@@ -12,6 +12,20 @@ const catScores = {
   trust: 53
 }
 
+// Demo stability value (would come from scoring system in production)
+const stabilityScore = ref(82)
+const showPulseCheck = ref(false)
+const lastMood = ref('')
+
+function openPulseCheck() {
+  showPulseCheck.value = true
+}
+
+function handleMoodSubmit(moods: string[], cats: { c: number; a: number; t: number }[]) {
+  lastMood.value = moods.join(', ')
+  // In production, this would save to backend and update scores
+}
+
 const hexacoScores = [
   { trait: 'Honesty-Humility', score: 89, color: '#00d2ad' },
   { trait: 'Emotionality', score: 75, color: '#2cd3ff' },
@@ -49,14 +63,27 @@ const stats = {
         <h1 class="text-4xl font-bold text-white mb-1 drop-shadow-lg">Good Morning, {{ userProfile.name.split(' ')[0] }}</h1>
         <p class="text-white/70 text-sm">Track your progress and insights</p>
       </div>
-      <UButton
-        to="/coach"
-        size="lg"
-        class="px-6 py-3 bg-white/20 backdrop-blur-xl hover:bg-white/30 text-white font-semibold rounded-full flex items-center gap-2 border border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] transition-all duration-300 active:scale-95"
-      >
-        Talk to AI Coach
-      </UButton>
+      <div class="flex items-center gap-3">
+        <UButton
+          @click="openPulseCheck"
+          size="lg"
+          class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-semibold rounded-full flex items-center gap-2 shadow-lg shadow-cyan-500/25 transition-all duration-300 active:scale-95"
+        >
+          <UIcon name="i-lucide-zap" class="size-5" />
+          Pulse Check
+        </UButton>
+        <UButton
+          to="/coach"
+          size="lg"
+          class="px-6 py-3 bg-white/20 backdrop-blur-xl hover:bg-white/30 text-white font-semibold rounded-full flex items-center gap-2 border border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] transition-all duration-300 active:scale-95"
+        >
+          Talk to AI Coach
+        </UButton>
+      </div>
     </header>
+
+    <!-- PulseCheck Modal -->
+    <PulseCheck v-model="showPulseCheck" @submit="handleMoodSubmit" />
 
     <!-- Main Dashboard Grid - COHERENCE + C/A/T Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -69,7 +96,8 @@ const stats = {
               <UIcon name="i-lucide-crown" class="size-5 text-white/50 mb-1" />
               <span class="text-5xl font-bold text-white">{{ coherenceScore }}</span>
             </div>
-            <span class="text-sm text-white/70 uppercase tracking-wider font-semibold">Coherence</span>
+            <span class="text-sm text-white/70 uppercase tracking-wider font-semibold mb-2">Coherence</span>
+            <StabilityBadge :stability="stabilityScore" />
           </div>
 
           <!-- COHERENCE Description -->
