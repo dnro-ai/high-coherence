@@ -150,9 +150,9 @@ const userMenu = [[
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-8 lg:p-12 overflow-y-auto relative z-10">
+    <main class="flex-1 pt-6 px-8 pb-8 lg:pt-8 lg:px-12 lg:pb-12 overflow-y-auto relative z-10">
       <!-- Top Icons Bar -->
-      <div class="flex items-center gap-2 mb-6">
+      <div class="flex items-center gap-2 mb-4">
         <button
           @click="collapsed = !collapsed"
           :class="[

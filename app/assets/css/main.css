@@ -74,9 +74,9 @@
   --text-primary: 15 23 42;
   --text-secondary: 15 23 42 / 0.7;
   --text-muted: 15 23 42 / 0.5;
-  --glass-bg: 255 255 255 / 0.6;
-  --glass-border: 255 255 255 / 0.8;
-  --glass-hover: 255 255 255 / 0.7;
+  --glass-bg: 255 255 255 / 0.35;
+  --glass-border: 255 255 255 / 0.5;
+  --glass-hover: 255 255 255 / 0.45;
   --card-shadow: rgba(0, 0, 0, 0.08);
   --scrollbar-track: 0 0 0 / 0.05;
   --scrollbar-thumb: 0 0 0 / 0.15;
@@ -94,12 +94,11 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Main headings: PP Valve Regular */
 h1,
 h2,
 h3 {
-  font-family: 'PP Valve', sans-serif;
-  font-weight: 400;
+  font-family: 'Fabriga', sans-serif;
+  font-weight: 500;
 }
 
 /* Subheadings: Fabriga Medium */
@@ -304,19 +303,19 @@ h6 {
   color: rgb(15 23 42 / 0.3) !important;
 }
 
-/* Glass panels in light mode - more opaque white */
+/* Glass panels in light mode - use variables */
 .light .glass {
-  background: rgb(255 255 255 / 0.6) !important;
-  border-color: rgb(255 255 255 / 0.8) !important;
+  background: rgb(var(--glass-bg)) !important;
+  border-color: rgb(var(--glass-border)) !important;
 }
 
 .light .bg-white\/5,
 .light .bg-white\/10 {
-  background: rgb(255 255 255 / 0.4) !important;
+  background: rgb(255 255 255 / 0.1) !important;
 }
 
 .light .bg-white\/20 {
-  background: rgb(255 255 255 / 0.5) !important;
+  background: rgb(255 255 255 / 0.15) !important;
 }
 
 /* Border adjustments for light mode */
