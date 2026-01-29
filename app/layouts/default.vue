@@ -2,6 +2,13 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const collapsed = ref(false)
+const colorMode = useColorMode()
+
+const toggleTheme = () => {
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+}
+
+const isDark = computed(() => colorMode.value === 'dark')
 
 const navigation: NavigationMenuItem[][] = [[
   { label: 'Dashboard', icon: 'i-lucide-layout-dashboard', to: '/dashboard' },
@@ -33,20 +40,21 @@ const userMenu = [[
 </script>
 
 <template>
-  <div class="flex min-h-screen w-full bg-gradient-to-br from-blue-900 via-teal-700 to-cyan-600 text-white font-sans relative overflow-hidden">
+  <div class="flex min-h-screen w-full font-sans relative overflow-hidden">
     <!-- Animated Background Blobs -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <div class="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] bg-cyan-400/20 rounded-full blur-3xl animate-blob" />
-      <div class="absolute -bottom-1/2 -left-1/4 w-[1000px] h-[1000px] bg-blue-500/20 rounded-full blur-3xl animate-blob-delay" />
+      <div :class="['absolute -top-1/2 -right-1/4 w-[800px] h-[800px] rounded-full blur-3xl animate-blob', isDark ? 'bg-cyan-400/20' : 'bg-cyan-400/30']" />
+      <div :class="['absolute -bottom-1/2 -left-1/4 w-[1000px] h-[1000px] rounded-full blur-3xl animate-blob-delay', isDark ? 'bg-blue-500/20' : 'bg-teal-400/30']" />
     </div>
 
     <!-- Sidebar -->
     <aside
       :class="[
         collapsed ? 'w-20' : 'w-64',
-        'transition-all duration-300 border-r border-white/10 bg-black/10 backdrop-blur-2xl flex flex-col relative z-10'
+        'transition-all duration-300 border-r flex flex-col relative z-10',
+        isDark ? 'border-white/10 bg-black/10' : 'border-slate-200/50 bg-white/30'
       ]"
-      style="box-shadow: 0 8px 32px 0 rgba(0,0,0,0.2);"
+      style="backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1);"
     >
       <!-- Header with Logo -->
       <div :class="collapsed ? 'p-4' : 'p-6'" class="flex items-center gap-2">
@@ -54,17 +62,17 @@ const userMenu = [[
           v-if="!collapsed"
           src="/high-coherence-logo.png"
           alt="High Coherence"
-          class="w-[70%] h-auto"
+          :class="['w-[70%] h-auto', !isDark && 'brightness-0']"
         />
         <button
           @click="collapsed = !collapsed"
-          class="p-1 hover:bg-white/10 rounded-lg transition-all duration-200 mt-2.5 ml-5"
+          :class="['p-1 rounded-lg transition-all duration-200 mt-2.5 ml-5', isDark ? 'hover:bg-white/10' : 'hover:bg-slate-900/10']"
           :title="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
         >
           <img
             src="/Sidebar_icon.svg"
             alt="Toggle sidebar"
-            class="w-6 h-6 opacity-50 hover:opacity-80 transition-opacity"
+            :class="['w-6 h-6 transition-opacity', isDark ? 'opacity-50 hover:opacity-80' : 'opacity-40 hover:opacity-70 brightness-0']"
           />
         </button>
       </div>
@@ -76,11 +84,15 @@ const userMenu = [[
           :key="item.label"
           :to="item.to"
           :class="[
-            'w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group',
+            'w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group border',
             collapsed ? 'justify-center' : '',
             isActive(item.to)
-              ? 'bg-white/10 backdrop-blur-md text-white border border-white/20'
-              : 'text-white/60 hover:bg-white/5 hover:text-white/90 border border-transparent'
+              ? isDark 
+                ? 'bg-white/10 backdrop-blur-md text-white border-white/20'
+                : 'bg-white/60 backdrop-blur-md text-slate-900 border-white/80'
+              : isDark
+                ? 'text-white/60 hover:bg-white/5 hover:text-white/90 border-transparent'
+                : 'text-slate-600 hover:bg-white/40 hover:text-slate-900 border-transparent'
           ]"
           :title="collapsed ? item.label : undefined"
         >
@@ -89,7 +101,9 @@ const userMenu = [[
             :name="item.icon"
             :class="[
               'size-6 transition-all duration-300',
-              isActive(item.to) ? 'text-cyan-400' : 'opacity-60 group-hover:opacity-90'
+              isActive(item.to) 
+                ? 'text-cyan-500' 
+                : isDark ? 'opacity-60 group-hover:opacity-90' : 'opacity-50 group-hover:opacity-80'
             ]"
           />
           <img
@@ -97,7 +111,8 @@ const userMenu = [[
             :src="item.icon"
             :alt="item.label"
             :class="[
-              'w-6 h-6 brightness-0 invert transition-all duration-300',
+              'w-6 h-6 transition-all duration-300',
+              isDark ? 'brightness-0 invert' : 'brightness-0',
               isActive(item.to) ? 'nav-icon-active' : 'opacity-60 group-hover:opacity-90'
             ]"
           />
@@ -105,15 +120,42 @@ const userMenu = [[
         </NuxtLink>
       </nav>
 
+      <!-- Theme Toggle -->
+      <div :class="collapsed ? 'px-4 py-2' : 'px-6 py-2'" class="flex justify-center">
+        <button
+          @click="toggleTheme"
+          :class="[
+            'p-2 rounded-xl transition-all duration-300',
+            isDark ? 'hover:bg-white/10 text-white/60' : 'hover:bg-slate-900/10 text-slate-600'
+          ]"
+          :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+        >
+          <UIcon
+            :name="isDark ? 'i-lucide-sun' : 'i-lucide-moon'"
+            class="size-5"
+          />
+        </button>
+      </div>
+
       <!-- User Card -->
       <div v-if="!collapsed" class="p-6">
-        <div class="user-card">
-          <p class="text-xs text-cyan-300 font-bold uppercase mb-2 flex items-center gap-2">
+        <div :class="[
+          'p-5 rounded-2xl backdrop-blur-xl border',
+          isDark 
+            ? 'bg-gradient-to-br from-cyan-500/20 to-teal-500/10 border-cyan-400/30' 
+            : 'bg-white/60 border-white/80'
+        ]" style="box-shadow: 0 8px 32px 0 rgba(6, 182, 212, 0.15);">
+          <p :class="['text-xs font-bold uppercase mb-2 flex items-center gap-2', isDark ? 'text-cyan-300' : 'text-cyan-600']">
             Alex Johnson
           </p>
-          <p class="text-sm text-white/80 mb-4">Principal</p>
+          <p :class="['text-sm mb-4', isDark ? 'text-white/80' : 'text-slate-600']">Principal</p>
           <UDropdownMenu :items="userMenu">
-            <button class="w-full py-2.5 bg-white/90 hover:bg-white text-teal-900 font-bold rounded-xl text-xs transition-all duration-300 shadow-[0_4px_16px_0_rgba(255,255,255,0.2)] hover:shadow-[0_6px_20px_0_rgba(255,255,255,0.3)] active:scale-95">
+            <button :class="[
+              'w-full py-2.5 font-bold rounded-xl text-xs transition-all duration-300 active:scale-95',
+              isDark 
+                ? 'bg-white/90 hover:bg-white text-teal-900 shadow-[0_4px_16px_0_rgba(255,255,255,0.2)] hover:shadow-[0_6px_20px_0_rgba(255,255,255,0.3)]'
+                : 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-lg hover:shadow-xl'
+            ]">
               Manage Account
             </button>
           </UDropdownMenu>
@@ -134,3 +176,4 @@ const userMenu = [[
     </main>
   </div>
 </template>
+

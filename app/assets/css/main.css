@@ -47,6 +47,36 @@
   --color-primary-800: 21 94 117;
   --color-primary-900: 22 78 99;
   --color-primary-950: 8 51 68;
+
+  /* Dark mode colors (default) */
+  --bg-gradient-start: #1e3a5f;
+  --bg-gradient-mid: #0d5a5a;
+  --bg-gradient-end: #0891b2;
+  --text-primary: 255 255 255;
+  --text-secondary: 255 255 255 / 0.7;
+  --text-muted: 255 255 255 / 0.5;
+  --glass-bg: 255 255 255 / 0.1;
+  --glass-border: 255 255 255 / 0.2;
+  --glass-hover: 255 255 255 / 0.15;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  --scrollbar-track: 255 255 255 / 0.05;
+  --scrollbar-thumb: 255 255 255 / 0.2;
+}
+
+/* Light mode colors */
+.light {
+  --bg-gradient-start: #e0f2fe;
+  --bg-gradient-mid: #ccfbf1;
+  --bg-gradient-end: #a5f3fc;
+  --text-primary: 15 23 42;
+  --text-secondary: 15 23 42 / 0.7;
+  --text-muted: 15 23 42 / 0.5;
+  --glass-bg: 255 255 255 / 0.6;
+  --glass-border: 255 255 255 / 0.8;
+  --glass-hover: 255 255 255 / 0.7;
+  --card-shadow: rgba(0, 0, 0, 0.08);
+  --scrollbar-track: 0 0 0 / 0.05;
+  --scrollbar-thumb: 0 0 0 / 0.15;
 }
 
 /* Body styling */
@@ -56,17 +86,23 @@ body {
   min-height: 100vh;
   font-family: 'Fabriga', sans-serif;
   font-weight: 300;
-  background: linear-gradient(135deg, #1e3a5f 0%, #0d5a5a 50%, #0891b2 100%);
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
+  color: rgb(var(--text-primary));
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Main headings: PP Valve Regular */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: 'PP Valve', sans-serif;
   font-weight: 400;
 }
 
 /* Subheadings: Fabriga Medium */
-h4, h5, h6 {
+h4,
+h5,
+h6 {
   font-family: 'Fabriga', sans-serif;
   font-weight: 500;
 }
@@ -77,16 +113,21 @@ h4, h5, h6 {
   font-weight: 900;
 }
 
-/* Glass card styling */
+/* Glass card styling - uses CSS variables for theme support */
 .glass {
-  @apply bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  background: rgb(var(--glass-bg));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgb(var(--glass-border));
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 var(--card-shadow);
 }
 
 /* Glass card hover effect */
 .glass-hover {
   @apply transition-all duration-300;
 }
+
 .glass-hover:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.15);
@@ -122,6 +163,7 @@ h4, h5, h6 {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -134,8 +176,15 @@ h4, h5, h6 {
 
 /* Pulse glow - subtle version */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(6, 182, 212, 0.5); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
+  }
 }
 
 .pulse-glow {
@@ -144,10 +193,13 @@ h4, h5, h6 {
 
 /* Animated blob */
 @keyframes blob-float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1) translate(0, 0);
     opacity: 0.3;
   }
+
   50% {
     transform: scale(1.2) translate(50px, -50px);
     opacity: 0.5;
@@ -170,11 +222,17 @@ h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-white/5 rounded;
+  background: rgb(var(--scrollbar-track));
+  border-radius: 0.25rem;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-white/20 rounded hover:bg-white/30;
+  background: rgb(var(--scrollbar-thumb));
+  border-radius: 0.25rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--scrollbar-thumb) / 1.5);
 }
 
 /* Navigation item active state filter for SVG icons */
@@ -202,4 +260,91 @@ h4, h5, h6 {
 .user-card {
   @apply p-5 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-teal-500/10 border border-cyan-400/30 backdrop-blur-xl;
   box-shadow: 0 8px 32px 0 rgba(6, 182, 212, 0.15);
+}
+
+/* ============================================
+   LIGHT MODE OVERRIDES
+   These rules flip colors when .light class is on html
+   ============================================ */
+
+/* Global text color fix for light mode */
+.light .text-white {
+  color: rgb(15 23 42) !important;
+  /* slate-900 */
+}
+
+.light .text-white\/90 {
+  color: rgb(15 23 42 / 0.9) !important;
+}
+
+.light .text-white\/80 {
+  color: rgb(15 23 42 / 0.8) !important;
+}
+
+.light .text-white\/70 {
+  color: rgb(15 23 42 / 0.7) !important;
+}
+
+.light .text-white\/60 {
+  color: rgb(15 23 42 / 0.6) !important;
+}
+
+.light .text-white\/50 {
+  color: rgb(15 23 42 / 0.5) !important;
+}
+
+.light .text-white\/40 {
+  color: rgb(15 23 42 / 0.4) !important;
+}
+
+.light .text-white\/30 {
+  color: rgb(15 23 42 / 0.3) !important;
+}
+
+/* Glass panels in light mode - more opaque white */
+.light .glass {
+  background: rgb(255 255 255 / 0.6) !important;
+  border-color: rgb(255 255 255 / 0.8) !important;
+}
+
+.light .bg-white\/5,
+.light .bg-white\/10 {
+  background: rgb(255 255 255 / 0.4) !important;
+}
+
+.light .bg-white\/20 {
+  background: rgb(255 255 255 / 0.5) !important;
+}
+
+/* Border adjustments for light mode */
+.light .border-white\/10,
+.light .border-white\/20 {
+  border-color: rgb(255 255 255 / 0.6) !important;
+}
+
+/* Metric circles in light mode */
+.light .metric-circle,
+.light .metric-circle-large {
+  background: rgb(255 255 255 / 0.5) !important;
+  border-color: rgb(6 182 212 / 0.3) !important;
+}
+
+/* Progress bar track in light mode */
+.light .progress-bar,
+.light .bg-white\/10.rounded-full {
+  background: rgb(0 0 0 / 0.1) !important;
+}
+
+/* Invert icon brightness for light mode */
+.light .brightness-0.invert {
+  filter: brightness(0) !important;
+}
+
+/* Hover states for light mode */
+.light .hover\:bg-white\/5:hover {
+  background: rgb(255 255 255 / 0.5) !important;
+}
+
+.light .hover\:bg-white\/10:hover {
+  background: rgb(255 255 255 / 0.6) !important;
 }
