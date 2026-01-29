@@ -57,24 +57,19 @@ const userMenu = [[
       style="backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1);"
     >
       <!-- Header with Logo -->
-      <div :class="collapsed ? 'p-4' : 'p-6'" class="flex items-center gap-2">
+      <div :class="collapsed ? 'p-4' : 'p-6'" class="flex items-center justify-center">
         <img
           v-if="!collapsed"
           src="/high-coherence-logo.png"
           alt="High Coherence"
           :class="['w-[70%] h-auto', !isDark && 'brightness-0']"
         />
-        <button
-          @click="collapsed = !collapsed"
-          :class="['p-1 rounded-lg transition-all duration-200 mt-2.5 ml-5', isDark ? 'hover:bg-white/10' : 'hover:bg-slate-900/10']"
-          :title="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        <div
+          v-else
+          :class="['w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold', isDark ? 'bg-cyan-500/20 text-cyan-400' : 'bg-cyan-500/10 text-cyan-600']"
         >
-          <img
-            src="/Sidebar_icon.svg"
-            alt="Toggle sidebar"
-            :class="['w-6 h-6 transition-opacity', isDark ? 'opacity-50 hover:opacity-80' : 'opacity-40 hover:opacity-70 brightness-0']"
-          />
-        </button>
+          C
+        </div>
       </div>
 
       <!-- Navigation -->
@@ -120,22 +115,6 @@ const userMenu = [[
         </NuxtLink>
       </nav>
 
-      <!-- Theme Toggle -->
-      <div :class="collapsed ? 'px-4 py-2' : 'px-6 py-2'" class="flex justify-center">
-        <button
-          @click="toggleTheme"
-          :class="[
-            'p-2 rounded-xl transition-all duration-300',
-            isDark ? 'hover:bg-white/10 text-white/60' : 'hover:bg-slate-900/10 text-slate-600'
-          ]"
-          :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
-        >
-          <UIcon
-            :name="isDark ? 'i-lucide-sun' : 'i-lucide-moon'"
-            class="size-5"
-          />
-        </button>
-      </div>
 
       <!-- User Card -->
       <div v-if="!collapsed" class="p-6">
@@ -172,6 +151,32 @@ const userMenu = [[
 
     <!-- Main Content -->
     <main class="flex-1 p-8 lg:p-12 overflow-y-auto relative z-10">
+      <!-- Top Icons Bar -->
+      <div class="flex items-center gap-2 mb-6">
+        <button
+          @click="collapsed = !collapsed"
+          :class="[
+            'p-2 rounded-xl transition-all duration-300',
+            isDark ? 'hover:bg-white/10 text-white/60' : 'hover:bg-slate-900/10 text-slate-500'
+          ]"
+          :title="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        >
+          <UIcon name="i-lucide-panel-left-close" class="size-5" />
+        </button>
+        <button
+          @click="toggleTheme"
+          :class="[
+            'p-2 rounded-xl transition-all duration-300',
+            isDark ? 'hover:bg-white/10 text-white/60' : 'hover:bg-slate-900/10 text-slate-500'
+          ]"
+          :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+        >
+          <UIcon
+            :name="isDark ? 'i-lucide-sun' : 'i-lucide-moon'"
+            class="size-5"
+          />
+        </button>
+      </div>
       <slot />
     </main>
   </div>
