@@ -1,9 +1,25 @@
 <script setup lang="ts">
-const userProfile = {
-  name: 'Alex Johnson',
-  role: 'Principal',
-  department: 'Leadership'
-}
+const { user } = useAuth()
+const supabase = useSupabaseClient()
+
+const profile = ref<{ full_name: string; role: string; department: string } | null>(null)
+
+watch(user, async (u) => {
+  if (u) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('full_name, role, department')
+      .eq('id', u.id)
+      .single()
+    profile.value = data
+  }
+}, { immediate: true })
+
+const userProfile = computed(() => ({
+  name: profile.value?.full_name || user.value?.email || 'User',
+  role: profile.value?.role || 'Member',
+  department: profile.value?.department || ''
+}))
 
 const coherenceScore = 86
 const catScores = {
