@@ -3,15 +3,25 @@ definePageMeta({
   layout: 'auth'
 })
 
+const { login } = useAuth()
+
 const email = ref('')
 const password = ref('')
 const rememberMe = ref(false)
 const loading = ref(false)
+const errorMessage = ref('')
 
 const handleLogin = async () => {
   loading.value = true
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  navigateTo('/dashboard')
+  errorMessage.value = ''
+  try {
+    await login(email.value, password.value)
+    navigateTo('/dashboard')
+  } catch (err: any) {
+    errorMessage.value = err.message || 'Invalid email or password'
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -30,6 +40,10 @@ const handleLogin = async () => {
     <!-- Login Card -->
     <div class="glass p-8">
       <h2 class="text-xl font-semibold text-white mb-6">Welcome back</h2>
+
+      <div v-if="errorMessage" class="p-3 rounded-xl bg-red-500/20 border border-red-500/30 text-red-300 text-sm">
+        {{ errorMessage }}
+      </div>
 
       <form @submit.prevent="handleLogin" class="space-y-5">
         <div>

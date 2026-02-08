@@ -1,24 +1,4 @@
-// Submit anonymous review
-const reviewTokens = new Map<string, {
-  revieweeId: string
-  revieweeName: string
-  reviewType: 'peer' | 'manager' | 'direct-report'
-  recipientEmail: string
-  createdAt: Date
-  expiresAt: Date
-  completed: boolean
-}>()
-
-// Store for aggregated review responses - anonymous
-const reviewResponses = new Map<string, {
-  revieweeId: string
-  responses: Array<{
-    reviewType: string
-    submittedAt: Date
-    scores: Record<string, number>
-    comments: Record<string, string>
-  }>
-}>()
+import { serverSupabaseServiceRole } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const token = getRouterParam(event, 'token')
@@ -40,37 +20,62 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // For demo mode - accept any submission
-  // In production, validate token against database
-  const revieweeId = 'demo-employee-id'
-  const reviewType = 'peer'
+  const supabase = serverSupabaseServiceRole(event)
 
-  // Store anonymous response (no connection to email)
-  if (!reviewResponses.has(revieweeId)) {
-    reviewResponses.set(revieweeId, {
-      revieweeId,
-      responses: []
+  // Look up the token to get reviewee info
+  const { data: reviewToken, error: tokenError } = await supabase
+    .from('review_tokens')
+    .select('reviewee_id, review_type, completed, expires_at')
+    .eq('token', token)
+    .single()
+
+  if (tokenError || !reviewToken) {
+    throw createError({
+      statusCode: 404,
+      message: 'Invalid review token'
     })
   }
 
-  reviewResponses.get(revieweeId)!.responses.push({
-    reviewType,
-    submittedAt: new Date(),
-    scores,
-    comments: comments || {}
-  })
-
-  // Mark token as completed if it exists
-  if (reviewTokens.has(token)) {
-    const review = reviewTokens.get(token)!
-    review.completed = true
+  if (reviewToken.completed) {
+    throw createError({
+      statusCode: 410,
+      message: 'This review has already been completed'
+    })
   }
+
+  if (new Date() > new Date(reviewToken.expires_at)) {
+    throw createError({
+      statusCode: 410,
+      message: 'This review link has expired'
+    })
+  }
+
+  // Store anonymous response
+  const { error: insertError } = await supabase
+    .from('review_responses')
+    .insert({
+      reviewee_id: reviewToken.reviewee_id,
+      token_id: token,
+      review_type: reviewToken.review_type,
+      scores,
+      comments: comments || {}
+    })
+
+  if (insertError) {
+    throw createError({
+      statusCode: 500,
+      message: 'Failed to save review response'
+    })
+  }
+
+  // Mark token as completed
+  await supabase
+    .from('review_tokens')
+    .update({ completed: true })
+    .eq('token', token)
 
   return {
     success: true,
     message: 'Thank you! Your anonymous feedback has been submitted.'
   }
 })
-
-// Export for admin dashboard
-export { reviewResponses }

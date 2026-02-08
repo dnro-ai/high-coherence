@@ -3,6 +3,31 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const collapsed = ref(false)
 const colorMode = useColorMode()
+const { user, logout } = useAuth()
+const supabase = useSupabaseClient()
+
+const profile = ref<{ full_name: string; role: string } | null>(null)
+
+// Fetch user profile
+watch(user, async (u) => {
+  if (u) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('full_name, role')
+      .eq('id', u.id)
+      .single()
+    profile.value = data
+  }
+}, { immediate: true })
+
+const displayName = computed(() => profile.value?.full_name || user.value?.email || 'User')
+const displayRole = computed(() => profile.value?.role || 'Member')
+const initials = computed(() => {
+  const name = displayName.value
+  const parts = name.split(' ')
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
+  return name.substring(0, 2).toUpperCase()
+})
 
 const toggleTheme = () => {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
@@ -35,7 +60,7 @@ const isActive = (path: string) => {
 
 const userMenu = [[
   { label: 'Settings', icon: 'i-lucide-settings', to: '/settings' },
-  { label: 'Sign out', icon: 'i-lucide-log-out', click: () => navigateTo('/login') }
+  { label: 'Sign out', icon: 'i-lucide-log-out', click: () => logout() }
 ]]
 </script>
 
@@ -125,9 +150,9 @@ const userMenu = [[
             : 'bg-white/60 border-white/80'
         ]" style="box-shadow: 0 8px 32px 0 rgba(6, 182, 212, 0.15);">
           <p :class="['text-xs font-bold uppercase mb-2 flex items-center gap-2', isDark ? 'text-cyan-300' : 'text-cyan-600']">
-            Alex Johnson
+            {{ displayName }}
           </p>
-          <p :class="['text-sm mb-4', isDark ? 'text-white/80' : 'text-slate-600']">Principal</p>
+          <p :class="['text-sm mb-4', isDark ? 'text-white/80' : 'text-slate-600']">{{ displayRole }}</p>
           <UDropdownMenu :items="userMenu">
             <button :class="[
               'w-full py-2.5 font-bold rounded-xl text-xs transition-all duration-300 active:scale-95',
@@ -144,7 +169,7 @@ const userMenu = [[
       <!-- Collapsed User Avatar -->
       <div v-if="collapsed" class="p-4">
         <UDropdownMenu :items="userMenu">
-          <UAvatar text="AJ" size="sm" class="bg-gradient-to-br from-cyan-500 to-teal-500 cursor-pointer" />
+          <UAvatar :text="initials" size="sm" class="bg-gradient-to-br from-cyan-500 to-teal-500 cursor-pointer" />
         </UDropdownMenu>
       </div>
     </aside>

@@ -1,16 +1,5 @@
 import { sendReviewInvite } from '../../utils/resend'
-import { randomUUID } from 'crypto'
-
-// In-memory store for demo - replace with database in production
-const reviewTokens = new Map<string, {
-  revieweeId: string
-  revieweeName: string
-  reviewType: 'peer' | 'manager' | 'direct-report'
-  recipientEmail: string
-  createdAt: Date
-  expiresAt: Date
-  completed: boolean
-}>()
+import { serverSupabaseServiceRole } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -29,25 +18,33 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Generate unique token
-  const token = randomUUID()
+  const supabase = serverSupabaseServiceRole(event)
 
-  // Store token with review details
-  reviewTokens.set(token, {
-    revieweeId,
-    revieweeName,
-    reviewType,
-    recipientEmail,
-    createdAt: new Date(),
-    expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days
-    completed: false
-  })
+  // Insert token into database (token is auto-generated UUID by default)
+  const { data: tokenRow, error } = await supabase
+    .from('review_tokens')
+    .insert({
+      reviewee_id: revieweeId,
+      reviewee_name: revieweeName,
+      review_type: reviewType,
+      recipient_email: recipientEmail,
+      expires_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString() // 14 days
+    })
+    .select('token')
+    .single()
+
+  if (error || !tokenRow) {
+    throw createError({
+      statusCode: 500,
+      message: 'Failed to create review token'
+    })
+  }
 
   // Send email via Resend
   const result = await sendReviewInvite(
     recipientEmail,
     revieweeName,
-    token,
+    tokenRow.token,
     reviewType
   )
 
@@ -61,9 +58,6 @@ export default defineEventHandler(async (event) => {
   return {
     success: true,
     message: 'Review invite sent successfully',
-    token // Return token for testing/demo purposes
+    token: tokenRow.token
   }
 })
-
-// Export for use in other routes
-export { reviewTokens }
