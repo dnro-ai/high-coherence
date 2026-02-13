@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-02-12 - Assessment Layout Redesign
+
+### Assessment Questions Page
+- **Progress Bar:** Section pill ("Section 1 of 7") now inline with progress bar in a single row
+- **Scenario Header:** Replaced teal gradient pill with circular icon + bold uppercase title ("AT A GATHERING…") + teal subtitle
+- **Question Format:** Changed from separate "Question 1" label + glass card to inline "Q1:" prefix
+- **Answer Badges:** A/B/C/D badges now circular (`rounded-full`) instead of rounded squares
+
+---
+
+
 ## 2026-01-29 - Logo Updates & Modal Light Mode
 
 ### Logo & Branding

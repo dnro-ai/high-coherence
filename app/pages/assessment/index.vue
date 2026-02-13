@@ -163,38 +163,34 @@ const overallQuestionNumber = computed(() => {
       <!-- Assessment In Progress -->
       <div v-else-if="isStarted && !isCompleted" class="max-w-2xl mx-auto">
         <!-- Progress Bar -->
-        <div class="mb-6">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-white/70">Progress</span>
-            <span class="text-sm text-white/50">{{ answeredCount }} / {{ totalQuestions }} ({{ progress }}%)</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill bg-gradient-to-r from-cyan-500 to-teal-500 transition-all duration-300" :style="{ width: `${progress}%` }" />
-          </div>
-        </div>
-
-        <!-- Section Header -->
-        <div class="mb-6">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white/70 text-xs">
+        <div class="mb-8">
+          <div class="flex items-center gap-4 mb-2">
+            <span class="shrink-0 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white/70 text-xs">
               Section {{ currentSectionIndex + 1 }} of {{ sections.length }}
             </span>
-            <span class="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white text-sm font-medium">
-              {{ currentSection.title }}
-            </span>
+            <span class="shrink-0 text-sm font-medium text-white/70">Progress</span>
+            <div class="progress-bar flex-1">
+              <div class="progress-fill bg-gradient-to-r from-cyan-500 to-teal-500 transition-all duration-300" :style="{ width: `${progress}%` }" />
+            </div>
+            <span class="shrink-0 text-sm text-white/50">{{ answeredCount }}/{{ totalQuestions }} ({{ progress }}%)</span>
           </div>
-          <p class="text-white/60 text-sm italic">{{ currentSection.subtitle }}</p>
         </div>
 
-        <!-- Question Number -->
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-white/50 text-sm">Question {{ overallQuestionNumber }}</span>
+        <!-- Scenario Header -->
+        <div class="flex items-start gap-4 mb-8">
+          <div class="shrink-0 w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden">
+            <img src="/assessments-icon.svg" alt="" class="w-10 h-10 opacity-70" />
+          </div>
+          <div>
+            <h3 class="text-white font-bold text-lg tracking-wide uppercase">{{ currentSection.title }}…</h3>
+            <p class="text-cyan-400/80 text-sm mt-1">{{ currentSection.subtitle }}</p>
+          </div>
         </div>
 
-        <!-- Question Card -->
-        <div class="glass p-6 mb-6 animate-fade-in-up" :key="currentQuestion.id">
-          <p class="text-lg text-white font-medium leading-relaxed">
-            {{ currentQuestion.text }}
+        <!-- Question -->
+        <div class="mb-6 animate-fade-in-up" :key="currentQuestion.id">
+          <p class="text-lg text-white font-semibold leading-relaxed">
+            Q{{ overallQuestionNumber }}: {{ currentQuestion.text }}
           </p>
         </div>
 
@@ -210,7 +206,7 @@ const overallQuestionNumber = computed(() => {
               : 'border-white/20 hover:border-cyan-400/50 hover:bg-white/5 bg-white/5'"
           >
             <span
-              class="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold"
+              class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
               :class="getCurrentAnswer === option.value ? 'bg-cyan-500 text-white' : 'bg-white/10 text-white/60'"
             >
               {{ option.value }}
